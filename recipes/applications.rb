@@ -1,7 +1,17 @@
-group node['cloudless-box']['application_group']
+applications.each do |app|
+  group app.group_name
 
-node['cloudless-box']['applications'].each do |app|
-  user node['cloudless-box']['application_account_template'].gsub("%{app}", app) do
-    group node['cloudless-box']['application_group']
+  user app.user_name do
+    group app.group_name
+  end
+
+  directory app.shared_path do
+    owner app.user_name
+    group app.group_name
+  end
+
+  file app.dotenv_path do
+    owner app.user_name
+    group app.group_name
   end
 end
