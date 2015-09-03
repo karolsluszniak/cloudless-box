@@ -20,11 +20,6 @@ if bucket && access_key_id && secret_access_key
     source 'backup/config.rb.erb'
   end
 
-  template "#{backup_path}/config/schedule.rb" do
-    source 'backup/schedule.rb.erb'
-    variables backup_path: backup_path
-  end
-
   template "#{backup_path}/models/master.rb" do
     source 'backup/master.rb.erb'
     variables name: name,
@@ -34,8 +29,15 @@ if bucket && access_key_id && secret_access_key
               postgresql_database: postgresql_database
   end
 
+  template "#{backup_path}/config/schedule.rb" do
+    source 'backup/schedule.rb.erb'
+    variables backup_path: backup_path
+    notifies :run, 'execute[whenever --update-crontab]'
+  end
+
   execute 'whenever --update-crontab' do
     cwd backup_path
+    action :nothing
   end
 
   service 'crond' do
