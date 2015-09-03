@@ -62,6 +62,14 @@ class Chef::Recipe
     def repository?
       repository.is_a?(String)
     end
+
+    def url
+      settings["applications.#{name}.url"]
+    end
+
+    def url?
+      url.is_a?(String)
+    end
   end
 
   def applications

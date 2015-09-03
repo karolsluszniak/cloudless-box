@@ -1,0 +1,15 @@
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name <%= @url %>;
+  passenger_enabled on;
+  passenger_ruby /opt/rbenv/versions/<%= @ruby_version %>/bin/ruby;
+  root <%= @path %>/current/public;
+  rails_env production;
+
+  error_page 404 422 500 /x.html;
+  location = /x.html {
+    root html;
+  }
+}

@@ -6,4 +6,6 @@ default['cloudless-box']['applications.vision.layout'] = 'rails'
 default['cloudless-box']['applications.vision.ruby'] = '2.2.2'
 default['cloudless-box']['applications.vision.repository'] =
   'git@bitbucket.org:karolsluszniak/vision.git'
+default['cloudless-box']['applications.vision.url'] =
+  'www.agarchia.pl'
 

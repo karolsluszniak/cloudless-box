@@ -23,3 +23,21 @@ template '/etc/nginx/conf.d/passenger.conf' do
 
   notifies :reload, "service[nginx]", :delayed
 end
+
+directory '/etc/nginx/sites-available'
+directory '/etc/nginx/sites-enabled'
+
+applications.select(&:url?).each do |app|
+  template "/etc/nginx/sites-available/#{app}" do
+    source 'nginx_site.erb'
+    variables url: app.url, ruby_version: app.ruby, path: app.path
+  end
+
+  link "/etc/nginx/sites-enabled/#{app}" do
+    to "/etc/nginx/sites-available/#{app}"
+
+    notifies :reload, "service[nginx]", :delayed
+  end
+end
+
+
