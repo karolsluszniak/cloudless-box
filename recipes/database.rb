@@ -15,9 +15,7 @@ connection = {
 }
 
 applications.each do |app|
-  if node['cloudless-box']["applications.#{app}.database"]
-    database_url = "postgres://#{app.user_name}@#{connection[:host]}:#{connection[:port]}/#{app}"
-
+  if app.database?
     postgresql_database_user "#{app} database owner" do
       connection connection
       username app.user_name
@@ -26,13 +24,13 @@ applications.each do |app|
 
     postgresql_database "#{app} database" do
       connection connection
-      database_name app.app_name
+      database_name app.name
       owner app.user_name
       action :create
     end
 
     execute "#{app} database url > dotenv" do
-      command "echo DATABASE_URL=#{database_url} >> #{app.dotenv_path}"
+      command "echo DATABASE_URL=postgres:///#{app} >> #{app.dotenv_path}"
       not_if "cat #{app.dotenv_path} | grep DATABASE_URL"
     end
   end
