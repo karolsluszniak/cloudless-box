@@ -1,0 +1,17 @@
+Model.new(:master, 'Master backup of <%= @name %>') do
+<% if @postgresql_database %>
+  database PostgreSQL do |db|
+    db.username           = "postgres"
+    db.sudo_user          = "postgres"
+  end
+<% end %>
+
+  store_with S3 do |s3|
+    s3.access_key_id     = "<%= @access_key_id %>"
+    s3.secret_access_key = "<%= @secret_access_key %>"
+    s3.bucket            = "<%= @bucket %>"
+    s3.path              = "<%= @name %>"
+  end
+
+  compress_with Bzip2
+end
