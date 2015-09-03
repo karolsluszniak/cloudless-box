@@ -1,10 +1,10 @@
 class Chef::Recipe
   class Application
-    attr_reader :name, :settings
+    attr_reader :name, :attributes
 
-    def initialize(name, settings)
+    def initialize(name, attributes)
       @name = name
-      @settings = settings
+      @attributes = attributes
     end
 
     def to_s
@@ -16,7 +16,7 @@ class Chef::Recipe
     end
 
     def group_name
-      settings['applications.prefix']
+      attributes['applications.prefix']
     end
 
     def path
@@ -24,7 +24,7 @@ class Chef::Recipe
     end
 
     def ruby
-      settings["applications.#{name}.ruby"]
+      attributes["applications.#{name}.ruby"]
     end
 
     def ruby?
@@ -32,7 +32,7 @@ class Chef::Recipe
     end
 
     def layout
-      settings["applications.#{name}.layout"]
+      attributes["applications.#{name}.layout"]
     end
 
     def rails?
@@ -47,12 +47,12 @@ class Chef::Recipe
       "#{shared_path}/.env"
     end
 
-    def database?
-      settings["applications.#{name}.database"]
+    def postgresql_database?
+      attributes["applications.#{name}.database"].to_s.include? 'postgresql'
     end
 
     def repository
-      settings["applications.#{name}.repository"]
+      attributes["applications.#{name}.repository"]
     end
 
     def repository_host
@@ -64,7 +64,7 @@ class Chef::Recipe
     end
 
     def url
-      settings["applications.#{name}.url"]
+      attributes["applications.#{name}.url"]
     end
 
     def url?

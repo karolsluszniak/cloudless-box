@@ -8,10 +8,6 @@ applications.select(&:repository?).each do |app|
     command "ssh-keygen -t rsa -q -f #{app.path}/.ssh/id_rsa -P \"\" -C deploy-#{app}"
   end
 
-  ssh_known_hosts_entry "#{app} repo known host" do
-    host app.repository_host
-  end
-
   if app.rails?
     %w{log pids system bundle}.each do |shared_directory|
       directory "#{app.shared_path}/#{shared_directory}" do
@@ -42,6 +38,9 @@ applications.select(&:repository?).each do |app|
         end
       end
 
+      migrate true
+      migration_command 'RAILS_ENV=production bundle exec rake db:migrate'
+
       before_restart do
         execute "RAILS_ENV=production bundle exec rake assets:precompile" do
           cwd release_path
@@ -49,12 +48,10 @@ applications.select(&:repository?).each do |app|
           group app.group_name
         end
       end
-
-      migrate true
-      symlink_before_migrate '.env' => '.env'
-      migration_command 'RAILS_ENV=production bundle exec rake db:migrate'
     end
 
+    symlink_before_migrate '.env' => '.env'
+    restart_command "touch #{app.path}/current/tmp/restart.txt"
     ignore_failure true
   end
 end
