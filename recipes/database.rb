@@ -1,5 +1,12 @@
+require 'digest'
+
+node.override['postgresql']['password']['postgres'] = Digest::MD5.hexdigest(rand.to_s)
+
 include_recipe 'postgresql::server'
-include_recipe "database::postgresql"
+
+chef_gem 'pg' do
+  compile_time false
+end
 
 connection = {
   host:     '127.0.0.1',

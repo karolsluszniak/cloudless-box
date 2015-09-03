@@ -9,7 +9,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "cloudless-box"
-    chef.json = { postgresql: { password: { postgres: 'postgres' } } }
   end
 
   # config.vm.provision :chef_client do |chef|
