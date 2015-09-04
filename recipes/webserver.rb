@@ -34,13 +34,13 @@ if (server_apps = applications.select(&:url?)).any?
 
   server_apps.each do |app|
     template "/etc/nginx/sites-available/#{app}" do
-      source 'webserver/nginx_site.erb'
+      source 'webserver/site.conf.erb'
       variables url: app.url, ruby_version: app.ruby, path: app.path
+      notifies :restart, "service[nginx]", :delayed
     end
 
     link "/etc/nginx/sites-enabled/#{app}" do
       to "/etc/nginx/sites-available/#{app}"
-      notifies :restart, "service[nginx]", :delayed
     end
   end
 end

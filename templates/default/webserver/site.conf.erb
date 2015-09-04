@@ -3,10 +3,13 @@ server {
   listen [::]:80;
 
   server_name <%= @url %>;
-  passenger_enabled on;
-  passenger_ruby /opt/rbenv/versions/<%= @ruby_version %>/bin/ruby;
   root <%= @path %>/current/public;
-  rails_env production;
+
+  passenger_enabled on;
+<% if @ruby_version %>
+  passenger_ruby /opt/rbenv/versions/<%= @ruby_version %>/bin/ruby;
+<% end %>
+  passenger_app_env production;
 
   error_page 404 422 500 /x.html;
   location = /x.html {

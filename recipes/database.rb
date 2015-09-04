@@ -21,9 +21,10 @@ if (postgresql_apps = applications.select(&:postgresql_database?)).any?
       action :create
     end
 
-    execute "#{app} database url > dotenv" do
-      command "echo DATABASE_URL=postgres:///#{app} >> #{app.dotenv_path}"
-      not_if "cat #{app.dotenv_path} | grep DATABASE_URL"
+    dotenv_variable "#{app} database url" do
+      file app.dotenv_path
+      variable :database_url
+      value "postgres:///#{app}"
     end
   end
 end

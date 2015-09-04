@@ -39,6 +39,14 @@ class Chef::Recipe
       layout.to_s == 'rails'
     end
 
+    def node?
+      layout.to_s == 'node'
+    end
+
+    def bower?
+      attributes["applications.#{name}.bower"]
+    end
+
     def shared_path
       "#{path}/shared"
     end
