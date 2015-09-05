@@ -1,4 +1,4 @@
-if (server_apps = applications.select(&:url?)).any?
+if applications.any?
   yum_repository 'passenger' do
     description 'Official Phusion Passenger repo'
     baseurl 'https://oss-binaries.phusionpassenger.com/yum/passenger/el/$releasever/$basearch'
@@ -32,10 +32,10 @@ if (server_apps = applications.select(&:url?)).any?
   directory '/etc/nginx/sites-available'
   directory '/etc/nginx/sites-enabled'
 
-  server_apps.each do |app|
+  applications.each do |app|
     template "/etc/nginx/sites-available/#{app}" do
       source 'webserver/site.conf.erb'
-      variables url: app.url, ruby_version: app.ruby, path: app.path
+      variables app: app
       notifies :restart, "service[nginx]", :delayed
     end
 

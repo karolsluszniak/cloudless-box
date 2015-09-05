@@ -1,4 +1,4 @@
-applications.select(&:repository?).each do |app|
+applications.each do |app|
   execute "#{app} ssh-keygen" do
     user    app.user_name
     group   app.group_name
@@ -6,8 +6,10 @@ applications.select(&:repository?).each do |app|
     command "ssh-keygen -t rsa -q -f #{app.path}/.ssh/id_rsa -P \"\" -C deploy-#{app}"
   end
 
-  ssh_known_hosts app.repository_host do
-    hashed true
-    user app.user_name
+  if app.repository?
+    ssh_known_hosts app.repository_host do
+      hashed true
+      user app.user_name
+    end
   end
 end

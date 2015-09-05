@@ -1,10 +1,4 @@
 applications.select(&:repository?).each do |app|
-  default_env = {
-    'RAILS_ENV' => 'production',
-    'NODE_ENV' => 'production',
-    'HOME' => app.path
-  }
-
   deploy_revision app.name do
     repo      app.repository
     deploy_to app.path
@@ -21,7 +15,7 @@ applications.select(&:repository?).each do |app|
           user app.user_name
           group app.group_name
           cwd release_path
-          environment default_env
+          environment app.env
         end
       end
 
@@ -30,7 +24,7 @@ applications.select(&:repository?).each do |app|
           user app.user_name
           group app.group_name
           cwd release_path
-          environment default_env
+          environment app.env
         end
       end
 
@@ -43,14 +37,14 @@ applications.select(&:repository?).each do |app|
           user app.user_name
           group app.group_name
           cwd release_path
-          environment default_env
+          environment app.env
         end
       end
     end
 
-    if app.postgresql_database? && app.rails?
+    if app.postgresql? && app.rails?
       migrate true
-      migration_command 'RAILS_ENV=production bundle exec rake db:migrate'
+      migration_command "#{app.env_string} bundle exec rake db:migrate"
     end
 
     before_restart do
@@ -59,7 +53,7 @@ applications.select(&:repository?).each do |app|
           user app.user_name
           group app.group_name
           cwd release_path
-          environment default_env
+          environment app.env
         end
       end
     end

@@ -1,5 +1,5 @@
 Model.new(:master, 'Master backup of <%= @name %>') do
-<% if @postgresql_database %>
+<% if @postgresql %>
   database PostgreSQL do |db|
     db.username           = "postgres"
     db.sudo_user          = "postgres"

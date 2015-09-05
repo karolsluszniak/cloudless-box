@@ -6,7 +6,7 @@ if bucket && access_key_id && secret_access_key
   name = node['name'] || 'cloudless-box'
   backup_base_path = '/root'
   backup_path = "#{backup_base_path}/backup"
-  postgresql_database = applications.find(&:postgresql_database?)
+  postgresql = applications.find(&:postgresql?)
 
   package 'ruby-devel'
   gem_package 'backup'
@@ -26,7 +26,7 @@ if bucket && access_key_id && secret_access_key
               bucket: bucket,
               access_key_id: access_key_id,
               secret_access_key: secret_access_key,
-              postgresql_database: postgresql_database
+              postgresql: postgresql
   end
 
   template "#{backup_path}/config/schedule.rb" do

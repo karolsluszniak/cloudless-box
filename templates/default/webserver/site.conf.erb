@@ -2,14 +2,18 @@ server {
   listen 80;
   listen [::]:80;
 
-  server_name <%= @url %>;
-  root <%= @path %>/current/public;
+  server_name <%= @app.url %>;
+  root <%= @app.path %>/current/public;
 
+<% if @app.passenger? %>
   passenger_enabled on;
-<% if @ruby_version %>
-  passenger_ruby /opt/rbenv/versions/<%= @ruby_version %>/bin/ruby;
+<% if @app.ruby? %>
+  passenger_ruby /opt/rbenv/versions/<%= @app.ruby %>/bin/ruby;
 <% end %>
-  passenger_app_env production;
+<% @app.env.each do |var, val| %>
+  passenger_env_var <%= var %> <%= val %>;
+<% end %>
+<% end %>
 
   error_page 404 422 500 /x.html;
   location = /x.html {

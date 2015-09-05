@@ -1,6 +1,6 @@
 require 'digest'
 
-if (postgresql_apps = applications.select(&:postgresql_database?)).any?
+if (postgresql_apps = applications.select(&:postgresql?)).any?
   node.override['postgresql']['password']['postgres'] = Digest::MD5.hexdigest(rand.to_s)
   include_recipe 'postgresql::server'
   chef_gem('pg') { compile_time false }
@@ -16,15 +16,9 @@ if (postgresql_apps = applications.select(&:postgresql_database?)).any?
 
     postgresql_database "#{app} database" do
       connection connection
-      database_name app.name
+      database_name app.postgresql_db_name
       owner app.user_name
       action :create
-    end
-
-    dotenv_variable "#{app} database url" do
-      file app.dotenv_path
-      variable :database_url
-      value "postgres:///#{app}"
     end
   end
 end

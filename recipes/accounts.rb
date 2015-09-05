@@ -8,15 +8,4 @@ applications.each do |app|
   directory app.path do
     mode '0755'
   end
-
-  directory app.shared_path do
-    owner app.user_name
-    group app.group_name
-  end
-
-  file app.dotenv_path do
-    owner app.user_name
-    group app.group_name
-    mode '0700'
-  end
 end
