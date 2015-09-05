@@ -1,8 +1,5 @@
 attributes = default['cloudless-box']
 
-attributes['applications.prefix'] = 'deploy'
-attributes['applications'] = %w{foundation leaderboard vision videku}
-
 attributes['applications.foundation.layout'] = 'rails'
 attributes['applications.foundation.ruby'] = '2.1.6'
 attributes['applications.foundation.postgresql'] = true

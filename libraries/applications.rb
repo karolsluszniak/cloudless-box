@@ -35,7 +35,7 @@ class Chef::Recipe
     end
 
     def group_name
-      unixify(attributes['applications.prefix'])
+      'deploy'
     end
 
     def meteor?
@@ -154,8 +154,14 @@ class Chef::Recipe
   end
 
   def applications
-    @applications ||= node['cloudless-box']['applications'].map do |name|
-      Application.new(name, node['cloudless-box'], node)
+    @applications ||= begin
+      app_list = node['cloudless-box'].keys
+      app_list = app_list.map { |key| (match = key.match(/^applications\.(\w+)\./)) && match[1] }
+      app_list = app_list.compact.uniq
+
+      app_list.map do |name|
+        Application.new(name, node['cloudless-box'], node)
+      end
     end
   end
 end
