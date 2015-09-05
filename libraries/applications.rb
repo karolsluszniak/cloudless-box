@@ -2,11 +2,12 @@ require 'digest'
 
 class Chef::Recipe
   class Application
-    attr_reader :name, :attributes
+    attr_reader :name, :attributes, :node
 
-    def initialize(name, attributes)
+    def initialize(name, attributes, node)
       @name = name
       @attributes = attributes
+      @node = node
     end
 
     def bower?
@@ -106,7 +107,7 @@ class Chef::Recipe
     end
 
     def url
-      attributes["applications.#{name}.url"] || "#{name}.box"
+      attributes["applications.#{name}.url"] || "#{name}.#{node['hostname']}"
     end
 
     def url_with_protocol
@@ -154,7 +155,7 @@ class Chef::Recipe
 
   def applications
     @applications ||= node['cloudless-box']['applications'].map do |name|
-      Application.new(name, node['cloudless-box'])
+      Application.new(name, node['cloudless-box'], node)
     end
   end
 end
