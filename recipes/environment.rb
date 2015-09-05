@@ -1,7 +1,7 @@
 applications.each do |app|
   shared_directories = %w{log pids system}
   shared_directories << 'bundle' if app.rails?
-  shared_directories << 'node_modules' if app.node?
+  shared_directories << 'node_modules' if app.node? || app.meteor?
   shared_directories << 'bower_components' if app.bower?
 
   shared_directories.each do |shared_directory|

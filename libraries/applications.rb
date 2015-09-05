@@ -20,9 +20,11 @@ class Chef::Recipe
     def env
       @env ||= {}.tap do |vars|
         vars['DATABASE_URL'] = "postgres:///#{postgresql_db_name}" if postgresql?
-        vars['HOME'] = path if node? || bower?
+        vars['HOME'] = path if node? || bower? || meteor?
+        vars['MONGO_URL'] = "mongodb:///#{mongodb_db_name}" if mongodb?
         vars['NODE_ENV'] = 'production' if node?
         vars['RAILS_ENV'] = 'production' if rails?
+        vars['ROOT_URL'] = url_with_protocol if meteor?
         vars['SECRET_KEY_BASE'] = secret_key_base if rails?
       end.merge(custom_env)
     end
@@ -35,12 +37,24 @@ class Chef::Recipe
       unixify(attributes['applications.prefix'])
     end
 
+    def meteor?
+      layout == 'meteor'
+    end
+
+    def mongodb?
+      attributes["applications.#{name}.mongodb"]
+    end
+
+    def mongodb_db_name
+      name
+    end
+
     def node?
       layout == 'node'
     end
 
     def passenger?
-      %w{node rails}.include?(layout)
+      %w{meteor node rails}.include?(layout)
     end
 
     def path
@@ -83,12 +97,20 @@ class Chef::Recipe
       "#{path}/shared"
     end
 
+    def sticky_sessions?
+      meteor? || attributes["applications.#{name}.sticky_sessions"]
+    end
+
     def to_s
       name
     end
 
     def url
       attributes["applications.#{name}.url"] || "#{name}.box"
+    end
+
+    def url_with_protocol
+      "http://#{url}"
     end
 
     def url?
@@ -118,7 +140,11 @@ class Chef::Recipe
     end
 
     def secret_key_base
-      Digest::SHA1.hexdigest([attributes['applications.secret'], group_name, name].join)
+      secret(:secret_key_base)
+    end
+
+    def secret(key)
+      Digest::SHA256.hexdigest([attributes['applications.secret'], group_name, name, key].join)
     end
 
     def unixify(string)

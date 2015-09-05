@@ -7,14 +7,17 @@ server {
 
 <% if @app.passenger? %>
   passenger_enabled on;
+<% if @app.sticky_sessions? %>
+  passenger_sticky_sessions on;
+<% end %>
 <% if @app.ruby? %>
   passenger_ruby /opt/rbenv/versions/<%= @app.ruby %>/bin/ruby;
 <% end %>
 <% @app.env.each do |var, val| %>
   passenger_env_var <%= var %> <%= val %>;
 <% end %>
-<% end %>
 
+<% end %>
   error_page 404 422 500 /x.html;
   location = /x.html {
     root html;
