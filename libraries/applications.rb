@@ -30,10 +30,6 @@ class Chef::Recipe
       end.merge(custom_env)
     end
 
-    def env_string
-      @env_string ||= env.map { |var, val| "#{var}='#{val}'" }.join(' ')
-    end
-
     def group_name
       'deploy'
     end

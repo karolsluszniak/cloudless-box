@@ -30,7 +30,7 @@ applications.select(&:repository?).each do |app|
       if app.meteor?
         build_path = "/tmp/meteor-build-#{app}-#{release_path.split('/').last}-#{Time.now.to_i}"
 
-        execute "meteor build #{build_path} --directory --server #{app.url}" do
+        execute "meteor build #{build_path} --directory --server #{app.url_with_protocol}" do
           user app.user_name
           group app.group_name
           cwd release_path
