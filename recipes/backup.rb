@@ -7,6 +7,7 @@ if bucket && access_key_id && secret_access_key
   backup_base_path = '/root'
   backup_path = "#{backup_base_path}/backup"
   postgresql = applications.find(&:postgresql?)
+  mongodb = applications.find(&:mongodb?)
 
   package 'ruby-devel'
   gem_package 'backup'
@@ -22,11 +23,12 @@ if bucket && access_key_id && secret_access_key
 
   template "#{backup_path}/models/master.rb" do
     source 'backup/master.rb.erb'
-    variables name: name,
-              bucket: bucket,
-              access_key_id: access_key_id,
-              secret_access_key: secret_access_key,
-              postgresql: postgresql
+    variables name:               name,
+              bucket:             bucket,
+              access_key_id:      access_key_id,
+              secret_access_key:  secret_access_key,
+              postgresql:         postgresql,
+              mongodb:            mongodb
   end
 
   template "#{backup_path}/config/schedule.rb" do

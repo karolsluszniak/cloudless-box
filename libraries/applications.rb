@@ -137,7 +137,7 @@ class Chef::Recipe
     end
 
     def layout
-      attributes["applications.#{name}.layout"].to_s
+      attributes["applications.#{name}"].to_s
     end
 
     def secret_key_base
@@ -145,7 +145,7 @@ class Chef::Recipe
     end
 
     def secret(key)
-      Digest::SHA256.hexdigest([attributes['applications.secret'], group_name, name, key].join)
+      Digest::SHA256.hexdigest([attributes['secret'], group_name, name, key].join)
     end
 
     def unixify(string)
@@ -156,7 +156,7 @@ class Chef::Recipe
   def applications
     @applications ||= begin
       app_list = node['cloudless-box'].keys
-      app_list = app_list.map { |key| (match = key.match(/^applications\.(\w+)\./)) && match[1] }
+      app_list = app_list.map { |key| (match = key.match(/^applications\.(\w+)$/)) && match[1] }
       app_list = app_list.compact.uniq
 
       app_list.map do |name|
