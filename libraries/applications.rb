@@ -107,7 +107,7 @@ class Chef::Recipe
     end
 
     def url
-      attributes["url"] || "#{name}.#{node['hostname']}"
+      attributes["url"] || "#{name}.#{node['fqdn']}"
     end
 
     def url_with_protocol

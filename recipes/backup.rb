@@ -4,7 +4,7 @@ if backup_attributes = node['cloudless-box']['backup']
   secret_access_key = backup_attributes['secret_access_key']
 
   if bucket && access_key_id && secret_access_key
-    name = node['name'] || 'cloudless-box'
+    name = node['name'] || node.name || node.chef_environment || 'cloudless-box'
     backup_base_path = '/root'
     backup_path = "#{backup_base_path}/backup"
     postgresql = applications.find(&:postgresql?)
