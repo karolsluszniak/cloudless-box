@@ -8,7 +8,7 @@ applications.select(&:repository?).each do |app|
     before_migrate do
       if app.ruby?
         file "#{release_path}/.ruby-version" do
-          content app.ruby
+          content app.ruby + "\n"
           owner app.user_name
           group app.group_name
         end
@@ -75,12 +75,15 @@ applications.select(&:repository?).each do |app|
           cwd release_path
           environment app.env
         end
-      end
-    end
 
-    if app.postgresql? && app.rails?
-      migrate true
-      migration_command "#{app.env_string} bundle exec rake db:migrate >> /tmp/#{app}-migration.log 2>&1"
+        rbenv_execute "bundle exec rake db:migrate" do
+          ruby_version app.ruby
+          user app.user_name
+          group app.group_name
+          cwd release_path
+          environment app.env
+        end
+      end
     end
 
     before_restart do

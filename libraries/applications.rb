@@ -21,7 +21,7 @@ class Chef::Recipe
     def env
       @env ||= {}.tap do |vars|
         vars['DATABASE_URL'] = "postgres:///#{postgresql_db_name}" if postgresql?
-        vars['HOME'] = path if node? || bower? || meteor?
+        vars['HOME'] = path
         vars['MONGO_URL'] = "mongodb:///#{mongodb_db_name}" if mongodb?
         vars['NODE_ENV'] = 'production' if node?
         vars['RAILS_ENV'] = 'production' if rails?
