@@ -2,16 +2,16 @@ require 'digest'
 
 class Chef::Recipe
   class Application
-    attr_reader :name, :attributes, :node
+    attr_reader :node, :name, :attributes
 
-    def initialize(name, attributes, node)
+    def initialize(node, name, attributes)
+      @node = node
       @name = name
       @attributes = attributes
-      @node = node
     end
 
     def bower?
-      attributes["applications.#{name}.bower"]
+      attributes["bower"]
     end
 
     def dotenv_path
@@ -43,7 +43,7 @@ class Chef::Recipe
     end
 
     def mongodb?
-      attributes["applications.#{name}.mongodb"]
+      attributes["mongodb"]
     end
 
     def mongodb_db_name
@@ -63,7 +63,7 @@ class Chef::Recipe
     end
 
     def postgresql?
-      attributes["applications.#{name}.postgresql"]
+      attributes["postgresql"]
     end
 
     def postgresql_db_name
@@ -75,7 +75,7 @@ class Chef::Recipe
     end
 
     def repository
-      attributes["applications.#{name}.repository"]
+      attributes["repository"]
     end
 
     def repository?
@@ -87,7 +87,7 @@ class Chef::Recipe
     end
 
     def ruby
-      attributes["applications.#{name}.ruby"]
+      attributes["ruby"]
     end
 
     def ruby?
@@ -99,7 +99,7 @@ class Chef::Recipe
     end
 
     def sticky_sessions?
-      meteor? || attributes["applications.#{name}.sticky_sessions"]
+      meteor? || attributes["sticky_sessions"]
     end
 
     def to_s
@@ -107,7 +107,7 @@ class Chef::Recipe
     end
 
     def url
-      attributes["applications.#{name}.url"] || "#{name}.#{node['hostname']}"
+      attributes["url"] || "#{name}.#{node['hostname']}"
     end
 
     def url_with_protocol
@@ -130,14 +130,14 @@ class Chef::Recipe
 
     def custom_env
       @custom_env ||= begin
-        vars = attributes.select { |key| key.start_with?(custom_env_prefix) }
-        vars = vars.map { |key, val| [key.sub(custom_env_prefix, '').upcase, val] }
+        vars = attributes['env'] || {}
+        vars = vars.map { |key, val| [key.upcase, val] }
         vars.to_h
       end
     end
 
     def layout
-      attributes["applications.#{name}"].to_s
+      attributes["layout"].to_s
     end
 
     def secret_key_base
@@ -145,7 +145,8 @@ class Chef::Recipe
     end
 
     def secret(key)
-      Digest::SHA256.hexdigest([attributes['secret'], group_name, name, key].join)
+      Digest::SHA256.hexdigest(
+        [attributes['secret'], node['cloudless-box']['secret'], group_name, name, key].join)
     end
 
     def unixify(string)
@@ -155,12 +156,8 @@ class Chef::Recipe
 
   def applications
     @applications ||= begin
-      app_list = node['cloudless-box'].keys
-      app_list = app_list.map { |key| (match = key.match(/^applications\.(\w+)$/)) && match[1] }
-      app_list = app_list.compact.uniq
-
-      app_list.map do |name|
-        Application.new(name, node['cloudless-box'], node)
+      (node['cloudless-box']['applications'] || {}).map do |name, attributes|
+        Application.new(node, name, attributes)
       end
     end
   end

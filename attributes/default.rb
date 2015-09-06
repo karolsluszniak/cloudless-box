@@ -1,0 +1,1 @@
+default['cloudless-box']['firewall'] = { 'rules' => %w{http ssh} }

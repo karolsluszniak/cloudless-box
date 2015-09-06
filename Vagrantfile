@@ -9,6 +9,39 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "cloudless-box"
+    chef.json = {
+      'cloudless-box' => {
+        'applications' => {
+          'vision' => {
+            'layout' => 'rails',
+            'ruby' => '2.2.2',
+            'postgresql' => true,
+            'repository' => 'git@bitbucket.org:karolsluszniak/vision.git'
+          },
+          'videku' => {
+            'layout' => 'node',
+            'bower' => true,
+            'repository' => 'git@bitbucket.org:karolsluszniak/videoreader.git',
+            'env' => {
+              'google_analytics_id' => 'UA-54811904-1'
+            }
+          },
+          'leaderboard' => {
+            'layout' => 'meteor',
+            'mongodb' => true,
+            'repository' => 'git@github.com:karolsluszniak/meteor-leaderboard.git'
+          }
+        },
+        'backup' => {
+          'bucket' => 'cloudless-ks3-backup',
+          'access_key_id' => 'AKIAIPH2IZHKA7M6CQYA',
+          'secret_access_key' => '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'
+        },
+        'firewall' => {
+          'rules' => %w(http ssh)
+        }
+      }
+    }
   end
 
   # config.vm.provision :chef_client do |chef|
