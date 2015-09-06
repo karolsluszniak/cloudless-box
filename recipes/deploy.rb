@@ -80,7 +80,7 @@ applications.select(&:repository?).each do |app|
 
     if app.postgresql? && app.rails?
       migrate true
-      migration_command "#{app.env_string} bundle exec rake db:migrate"
+      migration_command "#{app.env_string} bundle exec rake db:migrate >> /tmp/#{app}-migration.log 2>&1"
     end
 
     before_restart do
