@@ -4,7 +4,7 @@ maintainer_email 'karol@cloudless.pl'
 license 'all_rights'
 description 'Installs/Configures Cloudless box'
 long_description 'Installs/Configures Cloudless box capable of running multiple web applications'
-version '1.3.2'
+version '1.3.3'
 
 depends 'build-essential', '~> 2.2.3'
 depends 'database', '~> 4.0.8'

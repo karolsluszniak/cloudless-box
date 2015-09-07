@@ -3,7 +3,7 @@ server {
   listen [::]:80;
 
   server_name <%= @app.url %>;
-  root <%= @app.path %>/current/public;
+  root <%= @app.path %>/current/<%= @app.public_directory %>;
 
 <% if @app.passenger? %>
   passenger_enabled on;

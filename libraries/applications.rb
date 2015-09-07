@@ -66,6 +66,10 @@ class Chef::Recipe
       name
     end
 
+    def public_directory
+      attributes['public'] || 'public'
+    end
+
     def rails?
       layout == 'rails'
     end
