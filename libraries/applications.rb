@@ -79,7 +79,13 @@ class Chef::Recipe
     end
 
     def repository_host
-      repository? ? repository.match(/(.*@)?(.*)(:.*)/)[2] : nil
+      @repository_host ||= begin
+        if repository.to_s.start_with? 'git'
+          repository.match(/(.*@)(.*)(:.*)/)[2]
+        elsif repository.to_s.start_with? 'http'
+          repository.match(/(.*\:\/\/)(.*?)(\/.*)/)[2]
+        end
+      end
     end
 
     def ruby
