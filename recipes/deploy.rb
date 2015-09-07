@@ -76,8 +76,7 @@ applications.select(&:repository?).each do |app|
           environment app.env
         end
 
-        rbenv_execute "bundle exec rake db:migrate" do
-          ruby_version app.ruby
+        execute "bundle exec rake assets:precompile" do
           user app.user_name
           group app.group_name
           cwd release_path
@@ -88,10 +87,20 @@ applications.select(&:repository?).each do |app|
 
     before_restart do
       if app.rails?
-        execute "bundle exec rake assets:precompile" do
+        rbenv_execute "bundle exec rake db:migrate" do
+          ruby_version app.ruby
           user app.user_name
           group app.group_name
           cwd release_path
+          environment app.env
+        end
+      end
+
+      if app.whenever?
+        execute 'whenever --update-crontab' do
+          user app.user_name
+          group app.group_name
+          cwd app.path + '/current'
           environment app.env
         end
       end

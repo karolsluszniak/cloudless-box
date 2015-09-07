@@ -12,3 +12,7 @@ if (ruby_apps = applications.select(&:ruby?)).any?
     end
   end
 end
+
+if applications.find(&:whenever?)
+  gem_package 'whenever'
+end
