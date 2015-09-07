@@ -28,4 +28,9 @@ applications.each do |app|
       value val
     end
   end
+
+  source_dotenv_command = "eval \\$(cat ~/shared/.env | sed 's/^/export /')"
+  execute "echo \"#{source_dotenv_command}\" >> #{app.path}/.bash_profile" do
+    not_if "cat #{app.path}/.bash_profile | grep \"#{source_dotenv_command}\""
+  end
 end

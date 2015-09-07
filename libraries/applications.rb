@@ -128,10 +128,6 @@ class Chef::Recipe
       [group_name, unixify(name)].join('-')
     end
 
-    def whenever?
-      attributes['whenever']
-    end
-
     private
 
     def custom_env_prefix

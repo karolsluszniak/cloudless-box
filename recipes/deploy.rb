@@ -96,11 +96,11 @@ applications.select(&:repository?).each do |app|
         end
       end
 
-      if app.whenever?
-        execute 'whenever --update-crontab' do
+      if File.exists?("#{release_path}/config/schedule.rb")
+        execute "whenever --update-crontab #{app} --set 'path=#{app.path}/current'" do
           user app.user_name
           group app.group_name
-          cwd app.path + '/current'
+          cwd release_path
           environment app.env
         end
       end
