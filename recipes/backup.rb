@@ -11,6 +11,7 @@ if backup_attributes = node['cloudless-box']['backup']
     mongodb = applications.find(&:mongodb?)
 
     package 'ruby-devel'
+    package 'bzip2'
     gem_package 'backup'
     gem_package 'whenever'
 
