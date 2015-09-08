@@ -6,14 +6,6 @@ applications.select(&:repository?).each do |app|
     group     app.group_name
 
     before_migrate do
-      if app.ruby?
-        file "#{release_path}/.ruby-version" do
-          content app.ruby + "\n"
-          owner app.user_name
-          group app.group_name
-        end
-      end
-
       if app.bower?
         link "#{release_path}/bower_components" do
           to "#{app.shared_path}/bower_components"

@@ -5,7 +5,7 @@ applications.each do |app|
   shared_directories << 'bower_components' if app.bower?
 
   shared_directories.each do |shared_directory|
-    application_shared_directory shared_directory do
+    shared_dir shared_directory do
       application app
     end
   end
@@ -22,15 +22,28 @@ applications.each do |app|
   end
 
   app.env.each do |var, val|
-    dotenv_variable "#{app} #{var}" do
+    file_line var do
       file app.dotenv_path
-      variable var
-      value val
+      content "#{var}=#{val}"
+      filter "#{var}="
     end
   end
 
-  source_dotenv_command = "eval \\$(cat ~/shared/.env | sed 's/^/export /')"
-  execute "echo \"#{source_dotenv_command}\" >> #{app.path}/.bash_profile" do
-    not_if "cat #{app.path}/.bash_profile | grep \"#{source_dotenv_command}\""
+  if app.ruby?
+    file "#{app.path}/.ruby-version" do
+      content app.ruby + "\n"
+      owner app.user_name
+      group app.group_name
+    end
+
+    file_line "rbenv init" do
+      file app.path + '/.bash_profile'
+      content 'eval "$(rbenv init -)"'
+    end
+  end
+
+  file_line "dotenv export" do
+    file app.path + '/.bash_profile'
+    content "eval $(cat #{app.dotenv_path} | sed 's/^/export /')"
   end
 end
