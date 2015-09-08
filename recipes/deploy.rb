@@ -97,6 +97,8 @@ applications.select(&:repository?).each do |app|
       end
 
       if File.exists?("#{release_path}/config/schedule.rb")
+        gem_package 'whenever'
+
         execute "whenever --update-crontab #{app} --set 'path=#{app.path}/current'" do
           user app.user_name
           group app.group_name
