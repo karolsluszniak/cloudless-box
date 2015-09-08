@@ -1,6 +1,5 @@
-define :build_meteor_app, application: nil do
-  app = params[:application]
-  release_path = params[:path] || params[:name]
+define :build_meteor_app, app: nil, path: nil do
+  app, release_path = [params[:app], params[:path] || params[:name]]
   build_path = "/tmp/meteor-build-#{app}-#{release_path.split('/').last}-#{Time.now.to_i}"
 
   execute "meteor build #{build_path} --directory --server #{app.url_with_protocol}" do

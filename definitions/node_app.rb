@@ -1,6 +1,5 @@
-define :build_node_app, application: nil do
-  app = params[:application]
-  release_path = params[:path] || params[:name]
+define :build_node_app, app: nil, path: nil do
+  app, release_path = [params[:app], params[:path] || params[:name]]
 
   link "#{release_path}/node_modules" do
     to "#{app.shared_path}/node_modules"

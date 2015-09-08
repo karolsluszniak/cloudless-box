@@ -1,6 +1,5 @@
-define :build_bower_app, application: nil do
-  app = params[:application]
-  release_path = params[:path] || params[:name]
+define :build_bower_app, app: nil, path: nil do
+  app, release_path = [params[:app], params[:path] || params[:name]]
 
   link "#{release_path}/bower_components" do
     to "#{app.shared_path}/bower_components"
