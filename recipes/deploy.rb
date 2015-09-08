@@ -69,14 +69,16 @@ applications.select(&:repository?).each do |app|
       end
 
       if app.rails?
-        execute "bundle install --path #{app.shared_path}/bundle --without development test" do
+        rbenv_execute "bundle install --path #{app.shared_path}/bundle --without development test" do
+          ruby_version app.ruby
           user app.user_name
           group app.group_name
           cwd release_path
           environment app.env
         end
 
-        execute "bundle exec rake assets:precompile" do
+        rbenv_execute "bundle exec rake assets:precompile" do
+          ruby_version app.ruby
           user app.user_name
           group app.group_name
           cwd release_path
