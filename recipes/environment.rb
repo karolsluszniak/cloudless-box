@@ -44,6 +44,6 @@ applications.each do |app|
 
   file_line "dotenv export" do
     file app.path + '/.bash_profile'
-    content "eval $(cat #{app.dotenv_path} | sed 's/^/export /')"
+    content "eval \"$(cat #{app.dotenv_path} | sed 's/^/export /')\""
   end
 end

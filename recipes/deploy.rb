@@ -6,100 +6,15 @@ applications.select(&:repository?).each do |app|
     group     app.group_name
 
     before_migrate do
-      if app.bower?
-        link "#{release_path}/bower_components" do
-          to "#{app.shared_path}/bower_components"
-        end
-
-        execute "bower install --production" do
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-      end
-
-      if app.meteor?
-        build_path = "/tmp/meteor-build-#{app}-#{release_path.split('/').last}-#{Time.now.to_i}"
-
-        execute "meteor build #{build_path} --directory --server #{app.url_with_protocol}" do
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-
-        execute "rm -rf #{release_path}"
-        execute "mv #{build_path}/bundle #{release_path}"
-        execute "rmdir #{build_path}"
-
-        link "#{release_path}/programs/server/node_modules" do
-          to "#{app.shared_path}/node_modules"
-        end
-
-        execute "npm install --production" do
-          user app.user_name
-          group app.group_name
-          cwd "#{release_path}/programs/server"
-          environment app.env
-        end
-
-        execute "mv #{release_path}/main.js #{release_path}/app.js"
-      end
-
-      if app.node?
-        link "#{release_path}/node_modules" do
-          to "#{app.shared_path}/node_modules"
-        end
-
-        execute "npm install --production" do
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-      end
-
-      if app.rails?
-        rbenv_execute "bundle install --path #{app.shared_path}/bundle --without development test" do
-          ruby_version app.ruby
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-
-        rbenv_execute "bundle exec rake assets:precompile" do
-          ruby_version app.ruby
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-      end
+      build_bower_app(release_path) { application(app) } if app.bower?
+      build_meteor_app(release_path) { application(app) } if app.meteor?
+      build_node_app(release_path) { application(app) } if app.node?
+      build_rails_app(release_path) { application(app) } if app.rails?
     end
 
     before_restart do
-      if app.rails?
-        rbenv_execute "bundle exec rake db:migrate" do
-          ruby_version app.ruby
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-      end
-
-      if File.exists?("#{release_path}/config/schedule.rb")
-        gem_package 'whenever'
-
-        execute "whenever --update-crontab #{app} --set 'path=#{app.path}/current'" do
-          user app.user_name
-          group app.group_name
-          cwd release_path
-          environment app.env
-        end
-      end
+      release_rails_app(release_path) { application(app) } if app.rails?
+      whenever_schedule(release_path) { application(app) } if app.whenever?
     end
 
     symlink_before_migrate '.env' => '.env'

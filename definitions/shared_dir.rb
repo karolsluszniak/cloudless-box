@@ -1,9 +1,4 @@
-default_params = {
-  application: nil,
-  directory: nil
-}
-
-define :shared_dir, default_params do
+define :shared_dir, application: nil, directory: nil do
   application = params[:application]
   directory = params[:directory] || params[:name]
 

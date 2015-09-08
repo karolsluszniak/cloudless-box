@@ -1,13 +1,6 @@
 require 'shellwords'
 
-default_params = {
-  file:    nil,
-  content: nil,
-  filter:  nil,
-  guard:   nil
-}
-
-define :file_line, default_params do
+define :file_line, file: nil, content: nil, filter: nil, guard: nil do
   name = params[:name]
   file = params[:file]
   content = Shellwords.escape(params[:content] || name)

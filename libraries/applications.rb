@@ -128,11 +128,15 @@ class Chef::Recipe
       [group_name, unixify(name)].join('-')
     end
 
-    private
-
-    def custom_env_prefix
-      "applications.#{name}.env."
+    def whenever_schedule_path
+      "#{path}/current/config/schedule.rb"
     end
+
+    def whenever?
+      File.exists?(whenever_schedule_path)
+    end
+
+    private
 
     def custom_env
       @custom_env ||= begin
