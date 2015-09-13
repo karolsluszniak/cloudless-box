@@ -7,7 +7,8 @@ applications.each do |app|
   end
 
   if app.repository?
-    ssh_known_hosts app.repository_host do
+    ssh_known_hosts "#{app} repository host: #{app.repository_host}" do
+      host app.repository_host
       hashed true
       user app.user_name
     end
