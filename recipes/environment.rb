@@ -5,9 +5,7 @@ applications.each do |app|
   shared_directories << 'bower_components' if app.bower?
 
   shared_directories.each do |shared_directory|
-    shared_dir shared_directory do
-      application app
-    end
+    shared_dir(shared_directory) { app(app) }
   end
 
   directory app.shared_path do
