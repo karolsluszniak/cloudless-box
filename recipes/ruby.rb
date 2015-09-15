@@ -7,7 +7,8 @@ if (ruby_apps = applications.select(&:ruby?)).any?
   ruby_apps.map(&:ruby).uniq.each do |ruby_version|
     rbenv_ruby ruby_version
 
-    rbenv_gem 'bundler' do
+    rbenv_gem "bundler @ #{ruby_version}" do
+      package_name 'bundler'
       ruby_version ruby_version
     end
   end
