@@ -80,7 +80,7 @@ class Chef::Recipe
     end
 
     def redis_port
-      6379 + user_index
+      6380 + user_index
     end
 
     def repository
@@ -173,8 +173,9 @@ class Chef::Recipe
     end
 
     def user_index
-      user_ids = `grep ^#{group_name}- /etc/passwd`.split("\n").
-        map { |line| line.split(':') }.map { |parts| [parts[0], parts[2].to_i] }.to_h
+      user_ids = File.readlines('/etc/passwd').
+        select { |line| line.start_with?(group_name + '-') }.
+        map { |line| (parts = line.split(':')) && [parts[0], parts[2].to_i] }.to_h
 
       own_id = user_ids[user_name]
       min_id = user_ids.values.min
