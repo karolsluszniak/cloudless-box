@@ -25,6 +25,7 @@ class Chef::Recipe
         vars['MONGO_URL'] = "mongodb:///#{mongodb_db_name}" if mongodb?
         vars['NODE_ENV'] = 'production' if node?
         vars['RAILS_ENV'] = 'production' if rails?
+        vars['REDIS_URL'] = "redis://localhost:#{redis_port}" if redis?
         vars['ROOT_URL'] = url_with_protocol if meteor?
         vars['SECRET_KEY_BASE'] = secret_key_base if rails?
       end.merge(custom_env)
@@ -72,6 +73,14 @@ class Chef::Recipe
 
     def rails?
       layout == 'rails'
+    end
+
+    def redis?
+      attributes["redis"]
+    end
+
+    def redis_port
+      6379 + user_index
     end
 
     def repository
@@ -161,6 +170,20 @@ class Chef::Recipe
 
     def unixify(string)
       string.downcase.gsub(/[_\s]+/, '-')
+    end
+
+    def user_index
+      user_ids = `grep ^#{group_name}- /etc/passwd`.split("\n").
+        map { |line| line.split(':') }.map { |parts| [parts[0], parts[2].to_i] }.to_h
+
+      own_id = user_ids[user_name]
+      min_id = user_ids.values.min
+
+      unless own_id
+        raise("trying to access #{user_name}'s user index before account existed")
+      end
+
+      own_id - min_id
     end
   end
 
