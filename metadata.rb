@@ -1,10 +1,12 @@
+readme = IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+
 name 'cloudless-box'
+version '1.4.0'
 maintainer 'Karol Słuszniak'
 maintainer_email 'karol@cloudless.pl'
-license 'all_rights'
-description 'Installs/Configures Cloudless box'
-long_description 'Installs/Configures Cloudless box capable of running multiple web applications'
-version '1.4.0'
+license 'MIT'
+description 'Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node or Meteor applications on single server with PostgreSQL, MongoDB or Redis storage. Includes automatic backup, firewall and more.'
+long_description readme
 
 depends 'build-essential', '~> 2.2.3'
 depends 'database', '~> 4.0.8'

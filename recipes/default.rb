@@ -1,5 +1,4 @@
 include_recipe 'cloudless-box::essentials'
-include_recipe 'cloudless-box::ffmpeg'
 include_recipe 'cloudless-box::accounts'
 include_recipe 'cloudless-box::certificates'
 include_recipe 'cloudless-box::ruby'
