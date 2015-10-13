@@ -132,14 +132,22 @@ Add this key as a deployment key in your app's repo settings on GitHub or BitBuc
 
 Simply add S3 backup credentials to have a daily backup of all your PostgreSQL and MongoDB databases:
 
-    node['cloudless-box']['backup'] = {
-        'bucket' => '',
-        'access_key_id' => '',
-        'secret_access_key' => ''
+    {
+      "cloudless-box": {
+        "backup": {
+          "bucket": "(...)",
+          "access_key_id": "(...)",
+          "secret_access_key": "(...)"
+        }
+      }
     }
 
 ### Firewall
 
-This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security. You can disable this by setting:
+This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security. You can stop cloudless-box from touching your firewall settings with:
 
-    node['cloudless-box']['firewall'] = false
+    {
+      "cloudless-box": {
+        "firewall": false
+      }
+    }
