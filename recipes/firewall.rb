@@ -1,12 +1,10 @@
-if node['cloudless-box']['firewall']
+if node['cloudless-box']['firewall'] != false
   include_recipe 'iptables::default'
 
-  if rules = node['cloudless-box']['firewall']['rules']
-    rules.each do |rule|
-      iptables_rule "#{rule}" do
-        source "firewall/#{rule}.erb"
-        action :enable
-      end
+  %w{http ssh}.each do |rule|
+    iptables_rule "#{rule}" do
+      source "firewall/#{rule}.erb"
+      action :enable
     end
   end
 end

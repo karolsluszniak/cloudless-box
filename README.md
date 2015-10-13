@@ -1,6 +1,6 @@
 # cloudless-box
 
-Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node or Meteor applications on single server with PostgreSQL, MongoDB or Redis storage. Includes firewall, backup and more.
+Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node or Meteor applications on single server with PostgreSQL, MongoDB or Redis databases. Includes firewall, backup and more.
 
 ## Features
 
@@ -19,25 +19,27 @@ Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node 
 
 Visit the [Get Chef](https://www.chef.io/chef/get-chef/) page. There, do the following:
 
+- download and install Chef Development Kit
 - sign up for a free Hosted Chef account
-- install Chef Development Kit
 
 After logging into Hosted Chef management page, do the following:
 
 - create new environment for your server
-    - cloudless-box as a dependency
-    - configure environment attributes
-- download the initial chef-repo
+    - add *cloudless-box* as environment's cookbook dependency
+    - configure environment attributes according to *Configuration* section
+- download Starter Kit for your organization
 
-After obtaining chef-repo, `cd` into it and invoke the following command to bootstrap your new server:
+After obtaining Starter Kit, cd into it and invoke the following command to bootstrap your new server:
 
     knife bootstrap <address> --ssh-user root --ssh-password <your-password> --sudo --use-sudo-password --node-name <node-name> --environment <env-name> --run-list 'recipe[cloudless-box]'
 
 ### Securing the server
 
+It's recommended to disable root user after completing the bootstrap and using another, sudo-enabled account for future server visits.
+
 ##### Create new user
 
-It's recommended to disable root user after completing the bootstrap. Invoke the following:
+In order to create new user, invoke the following:
 
     adduser <myuser>
     gpasswd -a <myuser> wheel
@@ -69,7 +71,7 @@ Hit `Ctrl+O` and `Ctrl+X`. Finish by restarting SSH:
 
 Coming soon. Sorry for inconvenience.
 
-### Application deployment
+### Private repos
 
 If some of your applications are stored on private repositories, their initial deploy will fail due to access denial. In such case, you'll see error messages but the whole Chef run will finish with remaining tasks. Among others, it will still create system accounts and SSH keys for these applications. You can display SSH key for specific app with the following command:
 
@@ -89,4 +91,6 @@ Simply add S3 backup credentials to have a daily backup of all your PostgreSQL a
 
 ### Firewall
 
-This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security.
+This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security. You can disable this by setting:
+
+    node['cloudless-box']['firewall'] = false
