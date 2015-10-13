@@ -1,5 +1,5 @@
 name 'cloudless-box'
-version '1.4.0'
+version '1.4.1'
 maintainer 'Karol Słuszniak'
 maintainer_email 'karol@cloudless.pl'
 license 'MIT'
