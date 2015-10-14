@@ -1,11 +1,11 @@
 name 'cloudless-box'
-version '1.4.3'
+version '1.4.5'
 maintainer 'Karol Słuszniak'
 maintainer_email 'karol@cloudless.pl'
-license 'MIT'
-description 'Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node or Meteor applications on single server with databases, backup, firewall and more.'
 source_url 'https://github.com/karolsluszniak/cloudless-box'
 issues_url 'https://github.com/karolsluszniak/cloudless-box/issues'
+license 'MIT'
+description 'Cloudless box is an opinionated solution to run one or more Ruby on Rails, Node or Meteor applications on single server with databases, backup, firewall and more.'
 
 recipe "cloudless-box", "configure everything in cloudless box."
 
