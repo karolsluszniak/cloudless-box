@@ -207,6 +207,11 @@ Simply add S3 backup credentials to have a daily backup of all your PostgreSQL a
 
 Backup will only be enabled for database types that are actually used by configured [applications](#applications).
 
+### Whenever
+
+[Whenever](https://github.com/javan/whenever) allows you to write cron jobs with a human-readable, clean syntax. All you have to do is put `config/schedule.rb` file into your application and **cloudless-box** will automatically update your app's crontab at the end of every deployment.
+
 ### Firewall
 
 This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security. You can stop **cloudless-box** from touching your firewall settings by setting `node["cloudless-box"]["firewall"]` to `false`.
+
