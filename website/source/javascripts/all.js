@@ -16,4 +16,12 @@ $(function() {
   });
 
   content.find('table').wrap('<div class="table-wrapper">');
+
+  $('code').each(function() {
+    var code = $(this);
+
+    if (code.text().substr(0, 1) === '{') {
+      code.addClass('language-javascript');
+    }
+  });
 });
