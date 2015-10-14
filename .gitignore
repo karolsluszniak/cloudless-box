@@ -15,3 +15,5 @@ bin/*
 .kitchen/
 .kitchen.local.yml
 .vagrant-chef-solo.json
+
+.DS_Store

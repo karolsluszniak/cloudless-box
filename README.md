@@ -209,7 +209,7 @@ Backup will only be enabled for database types that are actually used by configu
 
 ### Whenever
 
-[Whenever](https://github.com/javan/whenever) allows you to write cron jobs with a human-readable, clean syntax. All you have to do is add `config/schedule.rb` file to your application and **cloudless-box** will automatically update your app's crontab at the end of every deployment.
+[Whenever](https://github.com/javan/whenever) allows to write cron jobs with a human-readable, clean syntax. All you have to do is add `config/schedule.rb` file to your application and **cloudless-box** will automatically update your app's cron table at the end of every deployment.
 
 ### Firewall
 
