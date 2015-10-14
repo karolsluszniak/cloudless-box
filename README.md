@@ -4,10 +4,10 @@ Cloudless box is an opinionated Chef cookbook that allows to run one or more Rub
 
 ##### Who is it for?
 
-1. Everyone who wants to have one or more Ruby on Rails, Node, Meteor applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server/data failure.
+1. Everyone who wants to have one or more Ruby on Rails, Node, Meteor applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server or data failure.
 2. Everyone who got used to easy deployments, such as those on Heroku, but wants it faster, cheaper and under control. With **cloudless-box**, deploying new app is a matter of adding few lines to server's JSON config plus you get similar env variables like DATABASE_URL.
 3. Everyone who is tired of configuring and executing deployment for each app separately (ie. Capistrano) - **cloudless-box** can handle all deployments at once. Of course you can still opt for custom deployment strategies by omitting single configuration line.
-4. Everyone who don't know their way around Chef - **cloudless-box** comes with complete setup guide, possible to follow by people unfamiliar with server cookery. You are assumed to have basic *nix terminal skills and a shiny new server with CentOS on it.
+4. Everyone who don't know their way around Chef - **cloudless-box** comes with complete setup guide, possible to follow by people unfamiliar with server cookery. You are assumed to have basic *NIX terminal skills and a shiny new server with CentOS on it.
 
 ##### What do you get?
 
@@ -15,13 +15,13 @@ Cloudless box is an opinionated Chef cookbook that allows to run one or more Rub
 2. Ability to access apps with server's subdomains or with custom domains.
 3. Separate PostgreSQL, MongoDB and/or Redis databases for all apps.
 4. Automatic solution to backup all databases to S3 on daily basis.
-5. Preconfigured server essentials: NTP, SSH and IPTables,
+5. Preconfigured server essentials: SSH, IPTables and NTP.
 6. Preconfigured web development essentials: Git, Bower, ImageMagick and FFmpeg.
 7. Per-app cron tasks with [whenever](https://github.com/javan/whenever)'s expressive syntax.
 
 ## Installation
 
-This section guides users new to Chef through a complete process of setting up **cloudless-box** on their own server, while managing the whole process with a Hosted Chef server. If you've already wrapped your head around Hosted Chef, Berkshelf and Knife, you can skip this section and just use this cookbook as usually.
+This section guides users unfamiliar with Chef through a complete process of setting up **cloudless-box** on their own server conveniently managed by the Hosted Chef server. If you've already wrapped your head around Hosted Chef, Berkshelf and Knife, you can skip this section and just use this cookbook as usually.
 
 ### Prepare Chef
 
@@ -69,7 +69,7 @@ In order to create new user, invoke the following:
     gpasswd -a <myuser> wheel
     passwd <myuser>
 
-Finish by entering your new user's password. Now you should be able to log into your server with new account. You can re-provision your server at any time using new account:
+Finish by entering your new user's password. Now you should be able to log into your server with new account. You can re-provision your server at any time using new account with:
 
     sudo chef-client
 
@@ -158,7 +158,7 @@ Attribute | Description
 `sticky_sessions` | enables sticky sessions Passenger setting; by default, it's enabled only for `meteor` layout; this comes useful when using WebSockets in an app
 `url` | sets custom domain for the application; if unset, app will be available at `<app-name>.domain.com` subdomain
 
-All attributes are optional and have sensible defaults. If none will be set, you'll end up with an user account for static, undeployed website without any database or addon on your server.
+All attributes are optional and have sensible defaults. If none will be set, you'll end up with a system account for static, undeployed website without any database or addon on your server.
 
 Packages like PostgreSQL, MongoDB, Redis, Ruby version manager, Meteor or Bower will not be installed on your system until any of your apps requests them. This will keep your system as lightweight as possible.
 
@@ -197,7 +197,7 @@ If some of your applications are stored on private repositories, their initial d
 
 Add this key as a deployment key in your app's repo settings on GitHub or BitBucket and re-provision with `chef-client` to finish the deployment.
 
-### Secret base
+### Secret
 
 You should set `node["cloudless-box"]["secret"]` to add additional secret component for generating various secret hashes across your server in order to improve its security. You can also configure [per-app](#applications) secrets for even more security.
 
@@ -209,7 +209,7 @@ Backup will only be enabled for database types that are actually used by configu
 
 ### Whenever
 
-[Whenever](https://github.com/javan/whenever) allows you to write cron jobs with a human-readable, clean syntax. All you have to do is put `config/schedule.rb` file into your application and **cloudless-box** will automatically update your app's crontab at the end of every deployment.
+[Whenever](https://github.com/javan/whenever) allows you to write cron jobs with a human-readable, clean syntax. All you have to do is add `config/schedule.rb` file to your application and **cloudless-box** will automatically update your app's crontab at the end of every deployment.
 
 ### Firewall
 
