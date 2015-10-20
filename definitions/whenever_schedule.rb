@@ -1,5 +1,6 @@
 define :whenever_schedule, app: nil, path: nil do
-  app, release_path = [params[:app], params[:path] || params[:name]]
+  app = params[:app]
+  release_path = app.release_working_directory(params[:path] || params[:name])
 
   gem_package 'whenever'
 

@@ -39,6 +39,10 @@ class Chef::Recipe
       layout == 'meteor'
     end
 
+    def middleman?
+      layout == 'middleman'
+    end
+
     def mongodb?
       attributes["mongodb"]
     end
@@ -68,7 +72,10 @@ class Chef::Recipe
     end
 
     def public_directory
-      attributes['public'] || 'public'
+      [
+        repository_path,
+        attributes['public'] || (middleman? ? 'build' : 'public')
+      ].compact.join('/')
     end
 
     def rails?
@@ -81,6 +88,10 @@ class Chef::Recipe
 
     def redis_port
       6380 + user_index
+    end
+
+    def release_working_directory(release_path)
+      [release_path, repository_path].compact.join('/')
     end
 
     def repository
@@ -99,6 +110,14 @@ class Chef::Recipe
           repository.match(/(.*\:\/\/)(.*?)(\/.*)/)[2]
         end
       end
+    end
+
+    def repository_path
+      attributes['repository_path']
+    end
+
+    def repository_path?
+      repository_path.is_a?(String)
     end
 
     def ruby

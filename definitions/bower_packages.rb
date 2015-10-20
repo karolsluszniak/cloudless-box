@@ -1,5 +1,6 @@
-define :build_bower_app, app: nil, path: nil do
-  app, release_path = [params[:app], params[:path] || params[:name]]
+define :install_bower_packages, app: nil, path: nil do
+  app = params[:app]
+  release_path = app.release_working_directory(params[:path] || params[:name])
 
   link "#{release_path}/bower_components" do
     to "#{app.shared_path}/bower_components"

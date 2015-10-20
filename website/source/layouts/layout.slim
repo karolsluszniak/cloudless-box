@@ -2,23 +2,15 @@ doctype html
 html lang='pl'
   head
     title Cloudless Box
+
     meta http-equiv='Content-Type' content='text/html; charset=UTF-8'
     meta name='viewport' content='width=device-width, initial-scale=1'
-    link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'
-    link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'
+    link href='https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto+Mono' rel='stylesheet' type='text/css'
 
     = stylesheet_link_tag "all"
     = javascript_include_tag "all"
 
   body class=page_classes
-    #header
-      .top-menu
-        a href='https://github.com/karolsluszniak/cloudless-box' Visit on GitHub
-        a href='https://supermarket.chef.io/cookbooks/cloudless-box' Chef Supermarket
-
-      .logo Cloudless Box
-      .author
-        = 'by '
-        a href='https://github.com/karolsluszniak' Karol Sluszniak
+    #header= partial 'layouts/header'
     #content= yield
 

@@ -6,7 +6,9 @@ applications.select(&:repository?).each do |app|
     group     app.group_name
 
     before_migrate do
-      build_bower_app(release_path) { app(app) } if app.bower?
+      install_bower_packages(release_path) { app(app) } if app.bower?
+
+      build_middleman_app(release_path) { app(app) } if app.middleman?
       build_meteor_app(release_path) { app(app) } if app.meteor?
       build_node_app(release_path) { app(app) } if app.node?
       build_rails_app(release_path) { app(app) } if app.rails?

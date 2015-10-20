@@ -1,10 +1,10 @@
 # cloudless-box
 
-Cloudless box is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Node or Meteor applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run the CentOS Linux.
+Cloudless box is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Node, Meteor or Middleman applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run CentOS Linux.
 
 ##### Who is it for?
 
-1. Everyone who wants to have one or more Ruby on Rails, Node, Meteor applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server or data failure.
+1. Everyone who wants to have one or more Ruby on Rails, Node, Meteor, Middleman applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server or data failure.
 2. Everyone who got used to easy deployments, such as those on Heroku, but wants it faster, cheaper and under control. With **cloudless-box**, deploying new app is a matter of adding few lines to server's JSON config plus you get similar env variables like DATABASE_URL.
 3. Everyone who is tired of configuring and executing deployment for each app separately (ie. Capistrano) - **cloudless-box** can handle all deployments at once. Of course you can still opt for custom deployment strategies by omitting single configuration line.
 4. Everyone who don't know their way around Chef - **cloudless-box** comes with complete setup guide, possible to follow by people unfamiliar with server cookery. You are assumed to have basic *NIX terminal skills and a shiny new server with CentOS on it.
@@ -47,7 +47,14 @@ Now you have **cloudless-box** cookbook and all its dependencies ready on your H
 
 ### Bootstrap new server
 
-Go back to [Chef Manage](https://manage.chef.io/) page in order to create configuration for your server. Navigate to *Policy* » *Environments* and click *Create*. Name the environment and click *Next*. On **Constraints** tab, select *cloudless-box* and enter current version of **cloudless-box** (you can find it at *Policy* » *Cookbooks*). Next is **Default attributes** tab. It's here where you write JSON that lists and configures your server's apps according to the [Usage](#usage) section below. You can also leave it empty for now and start by bootstrapping **cloudless-box** without any apps.
+Go back to [Chef Manage](https://manage.chef.io/) page and create configuration for your server:
+
+1. Navigate to *Policy* » *Environments* and click *Create*.
+2. Name the environment and click *Next*.
+3. On **Constraints** tab, select *cloudless-box* and enter current version of **cloudless-box** (you can find it at *Policy* » *Cookbooks*).
+4. Next is **Default attributes** tab. It's here where you write JSON that lists and configures your server's apps according to the [Usage](#usage) section below.
+
+You can leave attributes empty and start by bootstrapping **cloudless-box** without any apps. It'll still take a while to install server essentials so you'll have the time to read the [Usage](#usage) section and fill needed attributes.
 
 Finally, you can bootstrap your server with the following command:
 
@@ -147,12 +154,13 @@ Attribute | Description
 ----------|------------
 `bower` | requests Bower support; if set, Bower will be available and `bower install --production` will be run on app's deployment
 `env` | object with custom enviroment variables; if set, variables will be added to Bash profile, `.env` and Passenger ([read more](#environment-variables))
-`layout` | specifies the application layout; can be one of `static`, `rails`, `node` or `meteor`; defaults to `static`
+`layout` | specifies the application layout; can be one of `static`, `rails`, `node`, `meteor` or `middleman`; defaults to `static`
 `mongodb` | requests MongoDB database for the application; if set to `true`, MONGO_URL environment variable will become available
 `postgresql` | requests PostgreSQL database for the application; if set to `true`, DATABASE_URL environment variable will become available
 `public` | allows to change public sub-directory within app directory; defaults to `public`; if set to blank string, root directory will be served
 `redis` | requests Redis database for the application; if set to `true`, REDIS_URL environment variable will become available
 `repository` | enables deployment from specified repo; if unset, app deployment will not be managed by Chef; read [this](#private-repositories) if your repo is private
+`repository_path` | uses specified path within repository as deployment root path; if unset, repository root will be used
 `ruby` | requests specific Ruby version available for the application; if unset, default system Ruby will be available
 `secret` | sets additional secret component for generating SECRET_KEY_BASE in order to improve application security
 `sticky_sessions` | enables sticky sessions Passenger setting; by default, it's enabled only for `meteor` layout; this comes useful when using WebSockets in an app
@@ -215,3 +223,24 @@ Backup will only be enabled for database types that are actually used by configu
 
 This cookbook will add exclusion rules for SSH and HTTP and close all other ports for security. You can stop **cloudless-box** from touching your firewall settings by setting `node["cloudless-box"]["firewall"]` to `false`.
 
+## License
+
+Copyright (c) 2015 Karol Słuszniak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

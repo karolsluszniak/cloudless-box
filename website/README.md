@@ -1,0 +1,1 @@
+This is a Middleman source for static website dedicated for this cookbook, available at [box.cloudless.pl](http://box.cloudless.pl/). It wraps cookbooks's README with some styling and branding. It's added to Chefignore, so it's excluded from the actual cookbook source.

@@ -1,0 +1,63 @@
+html, body
+  margin: 0
+  padding: 0
+  background: #fff
+  color: #222
+  font-family: 'Roboto Slab', serif
+  font-size: 18px
+  line-height: 1.5em
+
+body
+  padding: 0 10px
+  box-sizing: border-box
+  margin: 0 auto
+  max-width: 850px
+
+.table-wrapper
+  overflow-x: auto
+
+table
+  border-spacing: 10px
+  border-collapse: separate
+
+h1, h2, h3, h4, h5, h6
+  position: relative
+  color: #000
+  margin: 1.5em 0 1em 0
+
+  a.header-anchor
+    display: none
+    position: absolute
+    top: -5px
+    right: 100%
+    padding: 5px 10px
+
+  &:hover
+    a.header-anchor
+      display: inline
+
+p
+  text-align: left
+
+li
+  margin: 0.5em 0
+
+pre
+  line-height: 1.25em
+  padding: 0.5em 1em
+  white-space: pre
+  overflow-x: auto
+
+strong
+  color: #000
+
+code
+  font-family: 'Roboto Mono', monospace
+  color: #666
+
+a
+  color: $link
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
