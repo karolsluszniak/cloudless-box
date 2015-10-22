@@ -11,6 +11,8 @@ html lang='pl'
     = javascript_include_tag "all"
 
   body class=page_classes
-    #header= partial 'layouts/header'
-    #content= yield
+    = partial 'layouts/header'
+
+    #content
+      = yield
 

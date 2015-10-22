@@ -1,6 +1,6 @@
-# cloudless-box
+# Cloudless Box
 
-Cloudless box is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Node, Meteor or Middleman applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run CentOS Linux.
+**cloudless-box** is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Node, Meteor or Middleman applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run CentOS Linux.
 
 ##### Who is it for?
 
@@ -27,23 +27,23 @@ This section guides users unfamiliar with Chef through a complete process of set
 
 First, visit the [Get Chef](https://downloads.chef.io/chef-dk/) page, download Chef Development Kit for your operating system and install it. Then, visit the [Hosted Chef](https://manage.chef.io/login) page and sign in to Chef Manage or register for a free account.
 
-If you've just created new account, you'll have to authorize your computer with the Chef server. Visit [Chef Manage](https://manage.chef.io/) and click *Administration* and *Organizations*. There, you can download the *Starter Kit*. Do so. After downloading it, copy the `.chef` directory inside it to your home directory:
+If you've just created new account, you'll have to authorize your computer with the Chef server. Visit [Chef Manage](https://manage.chef.io/) and navigate to *Administration* » *Organizations*. There, you can download the *Starter Kit*. Do so. After downloading it, copy Chef credentials to your home directory:
 
     mkdir ~/.chef
     cp <starter-kit-path>/.chef/* ~/.chef/
 
-You are now ready to work with your Hosted Chef account.
+You are now ready to work with your Hosted Chef server.
 
-### Install cloudless-box
+### Prepare cookbooks
 
-Next step is to upload **cloudless-box** to your Hosted Chef account. Invoke the following:
+Next step is to upload **cloudless-box** to your Hosted Chef server. Invoke the following:
 
     git clone https://github.com/karolsluszniak/cloudless-box.git
     cd cloudless-box
     berks install
     berks upload
 
-Now you have **cloudless-box** cookbook and all its dependencies ready on your Hosted Chef account.
+Now you have **cloudless-box** cookbook and all its dependencies ready on your Hosted Chef server.
 
 ### Bootstrap new server
 
@@ -65,6 +65,8 @@ That's it! You can re-provision the server by logging into it and executing:
     chef-client
 
 This is usually done when your web apps were updated and they need re-deploy or when you have changed your server's environment attributes.
+
+> You can repeat this step for each server that you want to govern with **cloudless-box**. You can manage up to 5 servers with a free Hosted Chef server.
 
 ### Secure new server
 

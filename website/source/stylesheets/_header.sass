@@ -1,15 +1,38 @@
 #header
-  .top-menu
-    text-align: right
-    margin: 0.5em 0
+  height: 100%
+  width: 100%
+  display: table
 
-    a
-      margin-left: 0.75em
+  .main-area
+    display: table-row
 
-  .logo
-    margin: 0.5em 0 0 0
-    font-size: 2em
-    color: #000
+    .cell
+      display: table-cell
+      vertical-align: middle
 
-  .author
-    margin: 0.5em 0
+      @media screen and (min-width: 500px)
+        padding-left: 10%
+
+      @media screen and (min-width: 650px)
+        padding-left: 20%
+
+      .logo
+        margin: 0.5em 0 0 0
+        font-size: 2em
+        color: #000
+
+      .author
+        margin: 0.5em 0 1em 1em
+
+      .lead
+        .line
+          margin: 0.25em 0
+
+      .actions
+        margin: 1em 0
+
+        a
+          padding: 0.5em
+
+        a:first-child
+          margin-left: 0.5em

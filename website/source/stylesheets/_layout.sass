@@ -4,14 +4,24 @@ html, body
   background: #fff
   color: #222
   font-family: 'Roboto Slab', serif
-  font-size: 18px
+  font-size: 16px
   line-height: 1.5em
+  height: 100%
+
+  @media screen and (min-width: 500px)
+    font-size: 18px
+
+  @media screen and (min-width: 1200px)
+    font-size: 22px
 
 body
   padding: 0 10px
   box-sizing: border-box
   margin: 0 auto
   max-width: 850px
+
+  @media screen and (min-width: 1200px)
+    max-width: 1050px
 
 .table-wrapper
   overflow-x: auto
@@ -46,7 +56,13 @@ pre
   line-height: 1.25em
   padding: 0.5em 1em
   white-space: pre
+  word-wrap: normal
   overflow-x: auto
+
+blockquote
+  padding-left: 0.5em
+  margin-left: 1.0em
+  border-left: 0.5em solid #bbb
 
 strong
   color: #000
