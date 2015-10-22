@@ -1,5 +1,6 @@
 /*
  *= require _jquery
  *= require _layout
- *= require _header
+ *= require _nav
+ *= require _anchor
  */
