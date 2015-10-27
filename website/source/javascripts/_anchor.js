@@ -5,11 +5,7 @@ $(function() {
     var link = $(this),
         href = link.attr('href'),
         target = $(href),
-        offset = href === '#' ? 0 : target.offset().top;
-
-    if (target.length && target[0].tagName.toUpperCase() !== 'H2') {
-      offset -= $('nav').height() + 5;
-    }
+        offset = href === '#' ? 0 : target.offset().top - ($('nav').height() + 8);
 
     $('html, body').animate({ scrollTop: offset });
 

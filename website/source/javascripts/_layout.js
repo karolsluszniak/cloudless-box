@@ -1,7 +1,7 @@
 /* global $ */ 'use strict';
 
 $(function() {
-  var content = $('#content');
+  var content = $('article');
 
   content.find('table').wrap('<div class="table-wrapper">');
   content.find('a:not([href^=#])').attr('target', '_blank');

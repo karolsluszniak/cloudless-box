@@ -1,3 +1,23 @@
+@keyframes fade-in-delay
+  from
+    opacity: 0
+  to
+    opacity: 0
+
+@keyframes fade-in
+  from
+    opacity: 0
+    filter: blur(5px)
+
+  to
+    opacity: 1
+    filter: blur(0px)
+
+@mixin fade-in-with-delay($i)
+  $delay: 0.5
+
+  animation: fade-in-delay #{($i - 1) * $delay}s, fade-in 1.5s ease-out #{($i - 1) * $delay}s
+
 #header
   height: 100%
   width: 100%
@@ -25,11 +45,21 @@
         margin: 0.5em 0 1em 1em
 
       .lead
+        margin: 1.5em 0
+
         .line
           margin: 0.25em 0
+
+          @for $i from 1 through 4
+            &:nth-child(#{$i})
+              @include fade-in-with-delay($i)
 
       .actions
         margin: 1em 0 0 0.5em
 
         a
           padding: 0.5em
+
+          @for $i from 1 through 3
+            &:nth-child(#{$i})
+              @include fade-in-with-delay(5 + ($i - 1) * 0.25)
