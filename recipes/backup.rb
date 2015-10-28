@@ -39,6 +39,10 @@ if backup_attributes = node['cloudless-box']['backup']
       notifies :run, 'execute[whenever --update-crontab]'
     end
 
+    template '/etc/sudoers' do
+      source 'backup/sudoers.erb'
+    end
+
     execute 'whenever --update-crontab' do
       cwd backup_path
       action :nothing
