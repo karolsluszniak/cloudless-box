@@ -51,6 +51,16 @@ class Chef::Recipe
       name
     end
 
+    def nginx_options?
+      nginx_options.any?
+    end
+
+    def nginx_options
+      @nginx_options ||= Array(attributes['nginx']).map do |parts|
+        parts.join(' ')
+      end
+    end
+
     def node?
       layout == 'node'
     end

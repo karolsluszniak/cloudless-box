@@ -18,6 +18,12 @@ server {
 <% end %>
 
 <% end %>
+<% if @app.nginx_options? %>
+<% @app.nginx_options.each do |option| %>
+  <%= option %>;
+<% end %>
+
+<% end %>
   error_page 404 422 500 /x.html;
   location = /x.html {
     root html;
