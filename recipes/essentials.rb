@@ -10,3 +10,4 @@ include_recipe "nodejs"
 include_recipe "cloudless-box::ffmpeg"
 
 package 'nano'
+package 'cronie'
