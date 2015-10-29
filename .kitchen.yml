@@ -6,7 +6,6 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-14.04
   - name: centos-7.1
 
 suites:
@@ -14,3 +13,24 @@ suites:
     run_list:
       - 'recipe[cloudless-box::default]'
     attributes:
+      cloudless-box:
+        applications:
+          middleman-app:
+            layout: middleman
+            ruby: 2.2.2
+            repository_path: website
+            repository: https://github.com/karolsluszniak/cloudless-box.git
+
+          node-app:
+            layout: node
+            bower: true
+
+          node-meteor-app:
+            layout: meteor
+            mongodb: true
+
+          rails-app:
+            layout: rails
+            ruby: 2.2.2
+            postgresql: true
+            redis: true
