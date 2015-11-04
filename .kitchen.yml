@@ -15,22 +15,27 @@ suites:
     attributes:
       cloudless-box:
         applications:
-          middleman-app:
-            layout: middleman
-            ruby: 2.2.2
-            repository_path: website
-            repository: https://github.com/karolsluszniak/cloudless-box.git
-
           node-app:
             layout: node
             bower: true
+            repository_path: test/apps/middleman-app
 
-          node-meteor-app:
+          meteor-app:
             layout: meteor
             mongodb: true
+            repository_path: test/apps/meteor-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git
+
+          middleman-app:
+            layout: middleman
+            ruby: 2.2.2
+            repository_path: test/apps/middleman-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git
 
           rails-app:
             layout: rails
             ruby: 2.2.2
             postgresql: true
             redis: true
+            repository_path: test/apps/rails-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git

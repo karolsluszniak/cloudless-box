@@ -1,0 +1,21 @@
+{
+  "name" : "node-app",
+  "version" : "1.0.0",
+  "private" : true,
+  "description" : "node-app",
+  "main" : "app.js",
+  "scripts" : {
+    "start" : "node app.js",
+    "postinstall" : "node postinstall.js"
+  },
+  "author" : "Karol Sluszniak",
+  "license" : "All Rights Reserved",
+  "dependencies": {
+    "express" : "~4.11.1",
+    "jade" : "~1.9.1"
+  },
+  "engines": {
+    "node": "0.12.0",
+    "npm": "2.5.1"
+  }
+}
