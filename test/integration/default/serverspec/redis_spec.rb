@@ -15,14 +15,14 @@ describe 'redis' do
   end
 
   describe file('/home/deploy-rails-app/shared/.env') do
-    its(:content) { should match /REDIS_URL=redis:\/\/localhost:6384/ }
+    its(:content) { should match /REDIS_URL=redis:\/\/localhost:6383/ }
   end
 
-  describe port(6384) do
+  describe port(6383) do
     it { should be_listening }
   end
 
-  describe command('redis-cli -p 6384 ping') do
+  describe command('redis-cli -p 6383 ping') do
     its(:stdout) { should match /^PONG$/ }
   end
 end

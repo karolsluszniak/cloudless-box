@@ -1,10 +1,5 @@
 applications.each do |app|
-  shared_directories = %w{log pids system}
-  shared_directories << 'bundle' if app.rails? || app.middleman?
-  shared_directories << 'node_modules' if app.node? || app.meteor?
-  shared_directories << 'bower_components' if app.bower?
-
-  shared_directories.each do |shared_directory|
+  app.shared_directories.each do |shared_directory|
     shared_dir(shared_directory) { app(app) }
   end
 
@@ -19,12 +14,9 @@ applications.each do |app|
     mode '0700'
   end
 
-  app.env.each do |var, val|
-    file_line var do
-      file app.dotenv_path
-      content "#{var}=#{val}"
-      filter "#{var}="
-    end
+  env_file "write env file for #{app}" do
+    file app.dotenv_path
+    variables app.env
   end
 
   if app.ruby?
@@ -45,3 +37,6 @@ applications.each do |app|
     content "eval \"$(cat #{app.dotenv_path} | sed 's/^/export /')\""
   end
 end
+
+
+

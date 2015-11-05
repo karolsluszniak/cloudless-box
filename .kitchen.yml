@@ -15,14 +15,10 @@ suites:
     attributes:
       cloudless-box:
         applications:
-          node-app:
-            layout: node
-            bower: true
-            repository_path: test/apps/middleman-app
-
           meteor-app:
             layout: meteor
             mongodb: true
+            sticky_sessions: true
             repository_path: test/apps/meteor-app
             repository: https://github.com/karolsluszniak/cloudless-box.git
 
@@ -31,6 +27,15 @@ suites:
             ruby: 2.2.2
             repository_path: test/apps/middleman-app
             repository: https://github.com/karolsluszniak/cloudless-box.git
+            url: custom-middleman-app-domain.com
+
+          node-app:
+            layout: node
+            bower: true
+            repository_path: test/apps/node-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git
+            env:
+              sample_variable: '123'
 
           rails-app:
             layout: rails
@@ -39,3 +44,15 @@ suites:
             redis: true
             repository_path: test/apps/rails-app
             repository: https://github.com/karolsluszniak/cloudless-box.git
+
+          static-app:
+            layout: static
+            public: ''
+            repository_path: test/apps/static-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git
+            shared_dirs:
+              - articles
+            symlinks:
+              about.html: true
+              article_index.html: articles/index.html
+              category_index.html: categories/index.html

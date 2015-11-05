@@ -12,6 +12,6 @@ describe 'posgresql' do
   end
 
   describe file('/home/deploy-rails-app/shared/.env') do
-    its(:content) { should match /DATABASE_URL=postgres:\/\/\/rails-app/ }
+    its(:content) { should match /DATABASE_URL=postgres:\/\/\/rails_app/ }
   end
 end

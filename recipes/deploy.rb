@@ -19,8 +19,14 @@ applications.select(&:repository?).each do |app|
       whenever_schedule(release_path) { app(app) } if app.whenever?
     end
 
-    symlink_before_migrate '.env' => '.env'
-    restart_command "touch #{app.path}/current/tmp/restart.txt"
+    symlink_before_migrate({})
+    create_dirs_before_symlink app.shared_release_directories
+    symlinks app.symlinks
+    restart_command do
+      file "#{app.release_working_directory(release_path)}/tmp/restart.txt" do
+        action :touch
+      end
+    end
     ignore_failure true
   end
 end

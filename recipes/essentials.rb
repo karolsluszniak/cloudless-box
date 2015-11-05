@@ -6,7 +6,7 @@ include_recipe 'selinux::permissive'
 include_recipe "ntp"
 include_recipe "git"
 include_recipe "imagemagick"
-include_recipe "nodejs"
+include_recipe "cloudless-box::nodejs"
 include_recipe "cloudless-box::ffmpeg"
 
 package 'nano'

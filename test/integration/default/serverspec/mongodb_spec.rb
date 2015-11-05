@@ -11,7 +11,7 @@ describe 'mongodb' do
     its(:stdout) { should match /^MongoDB shell version: [\w\.]+$/ }
   end
 
-  describe file('/home/deploy-node-meteor-app/shared/.env') do
-    its(:content) { should match /MONGO_URL=mongodb:\/\/\/node-meteor-app/ }
+  describe file('/home/deploy-meteor-app/shared/.env') do
+    its(:content) { should match /MONGO_URL=mongodb:\/\/\/meteor-app/ }
   end
 end

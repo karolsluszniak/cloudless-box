@@ -169,7 +169,9 @@ Attribute | Description
 `repository_path` | uses specified path within repository as deployment root path; if unset, repository root will be used
 `ruby` | requests specific Ruby version available for the application; if unset, default system Ruby will be available
 `secret` | sets additional secret component for generating SECRET_KEY_BASE in order to improve application security
+`shared_dirs` | array of additional shared directories for on-deployment creation and symlinking; defaults to `log pids system` (plus per-layout additions)
 `sticky_sessions` | enables sticky sessions Passenger setting; by default, it's enabled only for `meteor` layout; this comes useful when using WebSockets in an app
+`symlinks` | object with custom symlinks for on-deployment linking; defaults to `.env`; allows to override or remove default symlink with `false`
 `url` | sets custom domain for the application; if unset, app will be available at `<app-name>.domain.com` subdomain
 
 All attributes are optional and have sensible defaults. If none will be set, you'll end up with a system account for static, undeployed website without any database or addon on your server.

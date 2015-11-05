@@ -1,5 +1,22 @@
 ## Changelog
 
+### v1.7.0
+
+##### New features
+
+- added support for the `shared_dirs` per-app attribute
+- added support for the `symlinks` per-app attribute
+- added complete Test Kitchen spec suite
+
+##### Bug fixes
+
+- fixed redis & environment recipe timing that resulted in failures for new apps
+- fixed linking to non-existing database.yml for `rails` layout
+- fixed blank path argument handling
+- fixed `repository_path` for Rails applications
+- fixed nodejs version in order to meet `meteor` layout's requirements
+- fixed redis version to one that actually exists in yum
+
 ### v1.6.0
 
 ##### New features

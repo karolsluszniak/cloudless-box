@@ -20,7 +20,12 @@ define :build_rails_app, app: nil, path: nil do
 end
 
 define :release_rails_app, app: nil, path: nil do
-  app, release_path = [params[:app], params[:path] || params[:name]]
+  app = params[:app]
+  release_path = app.release_working_directory(params[:path] || params[:name])
+
+  file "#{release_path}/config/database.yml" do
+    action :delete
+  end
 
   rbenv_execute "bundle exec rake db:migrate" do
     ruby_version app.ruby

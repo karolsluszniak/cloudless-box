@@ -61,6 +61,10 @@ class Chef::Recipe
       end
     end
 
+    def nginx_root
+      path_join(path, 'current', public_directory)
+    end
+
     def node?
       layout == 'node'
     end
@@ -78,14 +82,11 @@ class Chef::Recipe
     end
 
     def postgresql_db_name
-      name
+      name && name.gsub(/[^\w]/, '_')
     end
 
     def public_directory
-      [
-        repository_path,
-        attributes['public'] || (middleman? ? 'build' : 'public')
-      ].compact.join('/')
+      path_join(repository_path, attributes['public'] || (middleman? ? 'build' : 'public'))
     end
 
     def rails?
@@ -101,7 +102,7 @@ class Chef::Recipe
     end
 
     def release_working_directory(release_path)
-      [release_path, repository_path].compact.join('/')
+      path_join(release_path, repository_path)
     end
 
     def repository
@@ -142,8 +143,55 @@ class Chef::Recipe
       "#{path}/shared"
     end
 
+    def shared_directories
+      @shared_directories ||= begin
+        custom_dirs = attributes["shared_dirs"] || []
+        custom_dirs = custom_dirs.split(' ') if custom_dirs.is_a?(String)
+
+        directories = %w{log pids system} + custom_dirs
+        directories << 'bundle' if rails? || middleman?
+        directories << 'node_modules' if node? || meteor?
+        directories << 'bower_components' if bower?
+
+        directories
+      end
+    end
+
+    def shared_release_directories
+      @shared_release_directories ||= symlinks.values.map do |path|
+        if (dirname = Pathname.new(path).dirname.to_s) != '.'
+          dirname
+        end
+      end.compact
+    end
+
     def sticky_sessions?
       meteor? || attributes["sticky_sessions"]
+    end
+
+    def symlinks
+      @symlinks ||= begin
+        shared_dir_map = shared_directories
+        shared_dir_map = shared_dir_map.zip(Array.new(shared_dir_map.size, true)).to_h
+
+        custom_map = attributes["symlinks"] || {}
+        custom_map = custom_map.split(' ') if custom_map.is_a?(String)
+        custom_map = custom_map.zip(Array.new(custom_map.size, true)).to_h if custom_map.is_a?(Array)
+
+        mapping = {
+          '.env' => true,
+          'log' => true,
+          'pids' => 'tmp/pids',
+          'system' => path_join(public_directory, 'system')
+        }
+
+        mapping = shared_dir_map.merge(mapping).merge(custom_map)
+        mapping = mapping.select { |source, target| target }
+
+        mapping.map do |source, target|
+          [source, path_join(repository_path, target.is_a?(String) ? target : source)]
+        end.to_h
+      end
     end
 
     def to_s
@@ -186,6 +234,10 @@ class Chef::Recipe
 
     def layout
       attributes["layout"].to_s
+    end
+
+    def path_join(*parts)
+      Pathname.new(parts[0].to_s).join(*parts[1..-1].map(&:to_s)).to_s
     end
 
     def secret_key_base
