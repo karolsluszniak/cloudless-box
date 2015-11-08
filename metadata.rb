@@ -1,5 +1,5 @@
 name 'cloudless-box'
-version '1.7.0'
+version '2.0.0'
 maintainer 'Karol Słuszniak'
 maintainer_email 'karol@cloudless.pl'
 source_url 'https://github.com/karolsluszniak/cloudless-box'

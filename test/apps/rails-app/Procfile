@@ -1,0 +1,3 @@
+infinite: bundle exec rake:infinite:invalid
+invalid: invalid-command
+sidekiq: bundle exec sidekiq

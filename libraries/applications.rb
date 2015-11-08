@@ -10,8 +10,28 @@ class Chef::Recipe
       @attributes = attributes
     end
 
+    def app_root
+      path_join(path, 'current', repository_path)
+    end
+
     def bower?
       attributes["bower"]
+    end
+
+    def directories_created_for_release
+      @directories_created_for_release ||= symlinks.values.map do |path|
+        if (dirname = Pathname.new(path).dirname.to_s) != '.'
+          dirname
+        end
+      end.compact
+    end
+
+    def directories_purged_for_release
+      @directories_purged_for_release ||= symlinks.map do |source, target|
+        if shared_directories.include?(source)
+          target
+        end
+      end.compact
     end
 
     def dotenv_path
@@ -20,6 +40,7 @@ class Chef::Recipe
 
     def env
       @env ||= {}.tap do |vars|
+        vars['APP_ROOT'] = app_root
         vars['DATABASE_URL'] = "postgres:///#{postgresql_db_name}" if postgresql?
         vars['HOME'] = path
         vars['MONGO_URL'] = "mongodb:///#{mongodb_db_name}" if mongodb?
@@ -83,6 +104,18 @@ class Chef::Recipe
 
     def postgresql_db_name
       name && name.gsub(/[^\w]/, '_')
+    end
+
+    def procfile_workers
+      @procfile_workers ||= if File.exists?(path = path_join(path, 'current', repository_path, 'Procfile'))
+        File.readlines(path).map do |line|
+          if (match = line.match(/([a-zA-Z0-9_]+):(.*)/))
+            match[1..2].map(&:strip)
+          end
+        end.compact.to_h
+      else
+        {}
+      end
     end
 
     def public_directory
@@ -157,14 +190,6 @@ class Chef::Recipe
       end
     end
 
-    def shared_release_directories
-      @shared_release_directories ||= symlinks.values.map do |path|
-        if (dirname = Pathname.new(path).dirname.to_s) != '.'
-          dirname
-        end
-      end.compact
-    end
-
     def sticky_sessions?
       meteor? || attributes["sticky_sessions"]
     end
@@ -215,11 +240,36 @@ class Chef::Recipe
     end
 
     def whenever_schedule_path
-      "#{path}/current/config/schedule.rb"
+      path_join(path, 'current', repository_path,
+        attributes['whenever'].is_a?(String) ? attributes['whenever'] : 'config/schedule.rb')
     end
 
     def whenever?
-      File.exists?(whenever_schedule_path)
+      unless attributes['whenever'] == false
+        File.exists?(whenever_schedule_path)
+      end
+    end
+
+    def workers
+      @workers ||= begin
+        procfile_workers.merge(attributes['workers'] || {}).map do |name, info|
+          if info.is_a?(Fixnum)
+            info = { 'command' => procfile_workers[name], 'scale' => info }
+          elsif info.is_a?(String)
+            info = { 'command' => info, 'scale' => 1 }
+          end
+
+          if info.is_a?(Hash)
+            info = { 'command' => info['command'], 'scale' => info['scale'] }
+            info['command'] ||= procfile_workers[name]
+            info['scale'] ||= 1
+
+            if info['command'].is_a?(String) && info['scale'].is_a?(Fixnum)
+              [name, info]
+            end
+          end
+        end.compact.to_h
+      end
     end
 
     private

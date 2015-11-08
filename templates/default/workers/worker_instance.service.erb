@@ -1,0 +1,17 @@
+[Unit]
+StopWhenUnneeded=true
+
+[Service]
+User=<%= @app.user_name %>
+Group=<%= @app.group_name %>
+WorkingDirectory=<%= @app.app_root %>
+<% @app.env.each do |var, val| %>
+Environment=<%= var %>=<%= val %>
+<% end %>
+ExecStart=/bin/bash -lc 'cd $APP_ROOT && <%= @command %>'
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=process

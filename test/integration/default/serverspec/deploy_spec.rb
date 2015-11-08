@@ -24,6 +24,10 @@ describe 'deploy' do
       its(:content) { should match /RAILS_ENV=production/ }
       its(:content) { should match /SECRET_KEY_BASE=\w{64}/ }
     end
+
+    describe cron do
+      it { should have_entry("0 0 * * * /bin/bash -l -c 'cd /home/deploy-rails-app/current/test/apps/rails-app && RAILS_ENV=production bundle exec rake sample --silent >> log/schedule.log 2>&1'").with_user('deploy-rails-app') }
+    end
   end
 
   context 'static app' do

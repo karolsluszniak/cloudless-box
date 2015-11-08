@@ -1,0 +1,8 @@
+[Unit]
+StopWhenUnneeded=true
+<% if @app.workers.any? %>
+Wants=<%= @app.workers.keys.map { |worker| "#{@app}-#{worker}.target" }.join(' ') %>
+<% end %>
+
+[Install]
+WantedBy=multi-user.target

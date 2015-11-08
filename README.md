@@ -17,7 +17,8 @@
 4. Automatic solution to backup all databases to S3 on daily basis.
 5. Preconfigured server essentials: SSH, IPTables and NTP.
 6. Preconfigured web development essentials: Git, Bower, ImageMagick and FFmpeg.
-7. Per-app cron tasks with [whenever](https://github.com/javan/whenever)'s expressive syntax.
+7. Per-app scalable workers with `Procfile` and scaling support.
+8. Per-app cron tasks with [whenever](https://github.com/javan/whenever)'s expressive syntax.
 
 ## Installation
 
@@ -173,6 +174,8 @@ Attribute | Description
 `sticky_sessions` | enables sticky sessions Passenger setting; by default, it's enabled only for `meteor` layout; this comes useful when using WebSockets in an app
 `symlinks` | object with custom symlinks for on-deployment linking; defaults to `.env`; allows to override or remove default symlink with `false`
 `url` | sets custom domain for the application; if unset, app will be available at `<app-name>.domain.com` subdomain
+`whenever` | allows to specify whenever file or to disable the scheduling (with `false`); if unset, `config/schedule.rb` will be used (if exists)
+`workers` | allows to add and control per-app workers; if unset, one worker process per line in app's Procfile will be configured
 
 All attributes are optional and have sensible defaults. If none will be set, you'll end up with a system account for static, undeployed website without any database or addon on your server.
 

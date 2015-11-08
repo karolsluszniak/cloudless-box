@@ -16,11 +16,12 @@ applications.select(&:repository?).each do |app|
 
     before_restart do
       release_rails_app(release_path) { app(app) } if app.rails?
-      whenever_schedule(release_path) { app(app) } if app.whenever?
+      update_whenever_schedule(release_path) { app(app) } if app.whenever?
     end
 
     symlink_before_migrate({})
-    create_dirs_before_symlink app.shared_release_directories
+    purge_before_symlink app.directories_purged_for_release
+    create_dirs_before_symlink app.directories_created_for_release
     symlinks app.symlinks
     restart_command do
       file "#{app.release_working_directory(release_path)}/tmp/restart.txt" do
@@ -28,5 +29,8 @@ applications.select(&:repository?).each do |app|
       end
     end
     ignore_failure true
+
+    notifies :enable, "service[#{app}]", :immediately
+    notifies :restart, "service[#{app}]", :immediately
   end
 end

@@ -44,6 +44,11 @@ suites:
             redis: true
             repository_path: test/apps/rails-app
             repository: https://github.com/karolsluszniak/cloudless-box.git
+            workers:
+              invalid: false
+              infinite:
+                command: 'bundle exec rake infinite'
+                scale: 2
 
           static-app:
             layout: static

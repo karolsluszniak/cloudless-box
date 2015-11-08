@@ -1,11 +1,13 @@
 ## Changelog
 
-### v1.7.0
+### v2.0.0
 
 ##### New features
 
+- added support for starting per-app workers defined in Procfile and the `workers` per-app attribute
 - added support for the `shared_dirs` per-app attribute
 - added support for the `symlinks` per-app attribute
+- added support for the `whenever` per-app attribute
 - added complete Test Kitchen spec suite
 
 ##### Bug fixes

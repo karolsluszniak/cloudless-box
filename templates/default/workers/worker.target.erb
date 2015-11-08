@@ -1,0 +1,5 @@
+[Unit]
+StopWhenUnneeded=true
+<% if @scale > 0 %>
+Wants=<%= (1..@scale).map { |n| "#{@app}-#{@worker}-#{n}.service" }.join(' ') %>
+<% end %>
