@@ -8,9 +8,15 @@ $(function() {
   content.find('h1').replaceWith($('<h2>').text('Intro'));
   content.find('h2, h3, h4, h5, h6').each(function() {
     var header = $(this),
-        id = header.text().toLowerCase().replace(/\s/g, '-').replace(/[^\w-]/g, '');
+        id = header.text().toLowerCase().replace(/\s/g, '-').replace(/[^\w-]/g, ''),
+        uniqId = id, uniqIndex = 0;
 
-    header.attr('id', id);
-    header.prepend('<a class="header-anchor" href="#' + id + '">➜</a>');
+    while ($('#' + uniqId).length) {
+      uniqId = [id, ++uniqIndex].join('-');
+    }
+
+    header.attr('id', uniqId);
+    header.prepend('<a class="header-anchor" href="#' + uniqId + '">' +
+      '<i class="fa fa-link" /></a>');
   });
 });

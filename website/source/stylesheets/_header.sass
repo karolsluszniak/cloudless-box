@@ -1,3 +1,6 @@
+$lead-lines: 4
+$lead-delay: 0.5
+
 @keyframes fade-in-delay
   from
     opacity: 0
@@ -14,11 +17,9 @@
     filter: blur(0px)
 
 @mixin fade-in-with-delay($i)
-  $delay: 0.5
+  animation: fade-in-delay #{($i - 1) * $lead-delay}s, fade-in 1.5s ease-out #{($i - 1) * $lead-delay}s
 
-  animation: fade-in-delay #{($i - 1) * $delay}s, fade-in 1.5s ease-out #{($i - 1) * $delay}s
-
-#header
+header
   height: 100%
   width: 100%
   display: table
@@ -39,7 +40,11 @@
       .logo
         margin: 0.5em 0 0 0
         font-size: 2em
-        color: #000
+        color: $header-color
+
+        .version
+          color: rgba($body-color, 0.35)
+          font-size: 0.75em
 
       .author
         margin: 0.5em 0 1em 1em
@@ -50,16 +55,20 @@
         .line
           margin: 0.25em 0
 
-          @for $i from 1 through 4
+          @for $i from 1 through $lead-lines
             &:nth-child(#{$i})
               @include fade-in-with-delay($i)
 
       .actions
         margin: 1em 0 0 0.5em
 
+        span.social
+          white-space: nowrap
+          margin-left: 0.5em
+
         a
           padding: 0.5em
 
-          @for $i from 1 through 3
+          @for $i from 1 through 5
             &:nth-child(#{$i})
-              @include fade-in-with-delay(5 + ($i - 1) * 0.25)
+              @include fade-in-with-delay(($lead-lines + 1) + ($i - 1) * 0.25)

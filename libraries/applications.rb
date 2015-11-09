@@ -106,9 +106,13 @@ class Chef::Recipe
       name && name.gsub(/[^\w]/, '_')
     end
 
+    def procfile_path
+      path_join(app_root, 'Procfile')
+    end
+
     def procfile_workers
-      @procfile_workers ||= if File.exists?(path = path_join(path, 'current', repository_path, 'Procfile'))
-        File.readlines(path).map do |line|
+      @procfile_workers ||= if File.exists?(procfile_path)
+        File.readlines(procfile_path).map do |line|
           if (match = line.match(/([a-zA-Z0-9_]+):(.*)/))
             match[1..2].map(&:strip)
           end
@@ -224,7 +228,13 @@ class Chef::Recipe
     end
 
     def url
-      attributes["url"] || "#{name}.#{node['fqdn']}"
+      if attributes['url'] && attributes['url'].end_with?('.')
+        "#{attributes["url"]}#{node['fqdn']}"
+      elsif attributes['url']
+        attributes["url"]
+      else
+        "#{name}.#{node['fqdn']}"
+      end
     end
 
     def url_with_protocol
@@ -239,13 +249,16 @@ class Chef::Recipe
       [group_name, unixify(name)].join('-')
     end
 
+    def whenever_schedule
+      attributes['schedule'].is_a?(String) ? attributes['schedule'] : 'config/schedule.rb'
+    end
+
     def whenever_schedule_path
-      path_join(path, 'current', repository_path,
-        attributes['whenever'].is_a?(String) ? attributes['whenever'] : 'config/schedule.rb')
+      path_join(app_root, whenever_schedule)
     end
 
     def whenever?
-      unless attributes['whenever'] == false
+      unless attributes['schedule'] == false
         File.exists?(whenever_schedule_path)
       end
     end

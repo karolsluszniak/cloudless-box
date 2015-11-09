@@ -16,7 +16,11 @@ applications.select(&:repository?).each do |app|
 
     before_restart do
       release_rails_app(release_path) { app(app) } if app.rails?
-      update_whenever_schedule(release_path) { app(app) } if app.whenever?
+    end
+
+    after_restart do
+      update_whenever { app(app) } if app.whenever?
+      update_workers { app(app) }
     end
 
     symlink_before_migrate({})
@@ -29,8 +33,5 @@ applications.select(&:repository?).each do |app|
       end
     end
     ignore_failure true
-
-    notifies :enable, "service[#{app}]", :immediately
-    notifies :restart, "service[#{app}]", :immediately
   end
 end

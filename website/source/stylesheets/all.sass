@@ -1,9 +1,26 @@
 /*
+ *= require _font_awesome
  *= require _normalize
  */
 
-$link: #1C75BC
+$header-color: #000
+$body-color: #111
+$background-color: #FFF
+$link-color: #1C75BC
+$code-color: #666
+$blockquote-color: #BBB
+$strong-color: $header-color
+$shadow-color: #AAA
 
-@import 'layout'
-@import 'header'
-@import 'nav'
+@mixin base-font
+  font-size: 16px
+
+  @media screen and (min-width: 500px)
+    font-size: 18px
+
+  @media screen and (min-width: 1200px)
+    font-size: 22px
+
+@import '_layout'
+@import '_header'
+@import '_nav'

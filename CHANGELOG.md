@@ -1,13 +1,13 @@
 ## Changelog
 
-### v2.0.0
+### v2.0
 
 ##### New features
 
-- added support for starting per-app workers defined in Procfile and the `workers` per-app attribute
-- added support for the `shared_dirs` per-app attribute
-- added support for the `symlinks` per-app attribute
-- added support for the `whenever` per-app attribute
+- added worker support via `Procfile` and the `workers` per-app attribute
+- added the `shared_dirs` per-app attribute support
+- added the `symlinks` per-app attribute support
+- added the `whenever` per-app attribute support
 - added complete Test Kitchen spec suite
 
 ##### Bug fixes
@@ -19,18 +19,18 @@
 - fixed nodejs version in order to meet `meteor` layout's requirements
 - fixed redis version to one that actually exists in yum
 
-### v1.6.0
+### v1.6
 
 ##### New features
 
-- added support for the `nginx` per-app attribute
+- added the `nginx` per-app attribute support
 
 ##### Bug fixes
 
 - added cronie package in case it's not installed
 - fixed backup sudo execution issue
 
-### v1.5.0
+### v1.5
 
 ##### New features
 

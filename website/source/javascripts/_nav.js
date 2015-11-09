@@ -1,9 +1,18 @@
 /* global $ */ 'use strict';
 
+var nav, $window;
+
+var refreshNav = function() {
+  var show = $window.scrollTop() >= $window.height() - 20;
+
+  nav.toggleClass('visible', show);
+};
+
 $(function() {
-  var nav = $('<nav>'),
-      links = $('<div class="links">').appendTo(nav),
-      $window = $(window);
+  nav = $('<nav>');
+  $window = $(window);
+
+  var links = $('<div class="links">').appendTo(nav);
 
   $('h2').each(function() {
     var header = $(this),
@@ -13,22 +22,13 @@ $(function() {
     links.append(link);
   });
 
+  $('header .nav').clone().appendTo(links);
+
   links.prepend($('<a href="#">').text('Home'));
 
-  $('body').append(nav.hide());
+  $('body').append(nav);
 
-  $window.scroll(showOrHide);
-  $window.resize(showOrHide);
-  showOrHide();
-
-  function showOrHide() {
-    var visible = nav.is(':visible'),
-        show = $window.scrollTop() >= $window.height() - 20;
-
-    if (visible && !show) {
-      nav.fadeOut();
-    } else if (!visible && show) {
-      nav.fadeIn();
-    }
-  }
+  $window.scroll(refreshNav);
+  $window.resize(refreshNav);
+  refreshNav();
 });

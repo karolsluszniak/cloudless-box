@@ -1,18 +1,13 @@
 html, body
   margin: 0
   padding: 0
-  background: #fff
-  color: #222
+  background: $background-color
+  color: $body-color
   font-family: 'Roboto Slab', serif
-  font-size: 16px
-  line-height: 1.5em
+  line-height: 1.4em
   height: 100%
 
-  @media screen and (min-width: 500px)
-    font-size: 18px
-
-  @media screen and (min-width: 1200px)
-    font-size: 22px
+  @include base-font
 
 body
   padding: 0 10px
@@ -29,10 +24,12 @@ body
 table
   border-spacing: 10px
   border-collapse: separate
+  width: 100%
+  text-align: left
 
 h1, h2, h3, h4, h5, h6
   position: relative
-  color: #000
+  color: $header-color
   margin: 1.5em 0 1em 0
 
   a.header-anchor
@@ -48,8 +45,10 @@ h1, h2, h3, h4, h5, h6
 
 h2
   margin-top: 3.5em
+  padding-top: 1.5em
 
   a.header-anchor
+    margin-top: 1.5em
 
 p
   text-align: left
@@ -67,17 +66,17 @@ pre
 blockquote
   padding-left: 0.5em
   margin-left: 1.0em
-  border-left: 0.5em solid #bbb
+  border-left: 0.5em solid $blockquote-color
 
 strong
-  color: #000
+  color: $strong-color
 
 code
   font-family: 'Roboto Mono', monospace
-  color: #666
+  color: $code-color
 
 a
-  color: $link
+  color: $link-color
   text-decoration: none
 
   &:hover
