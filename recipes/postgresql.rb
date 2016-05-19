@@ -11,6 +11,11 @@ if (postgresql_apps = applications.select(&:postgresql?)).any?
     postgresql_database_user "#{app} database owner" do
       connection connection
       username app.user_name
+
+      if app.postgresql_password
+        password app.postgresql_password
+      end
+
       action :create
     end
 

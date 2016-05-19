@@ -38,17 +38,23 @@ class Chef::Recipe
       "#{shared_path}/.env"
     end
 
+    def elixir?
+      phoenix?
+    end
+
     def env
       @env ||= {}.tap do |vars|
         vars['APP_ROOT'] = app_root
-        vars['DATABASE_URL'] = "postgres:///#{postgresql_db_name}" if postgresql?
+        vars['DATABASE_URL'] = postgresql_db_url if postgresql?
         vars['HOME'] = path
+        vars['MIX_ENV'] = 'prod' if elixir?
         vars['MONGO_URL'] = "mongodb:///#{mongodb_db_name}" if mongodb?
         vars['NODE_ENV'] = 'production' if node?
+        vars['PORT'] = proxy_port.to_s if proxy?
         vars['RAILS_ENV'] = 'production' if rails?
         vars['REDIS_URL'] = "redis://localhost:#{redis_port}" if redis?
         vars['ROOT_URL'] = url_with_protocol if meteor?
-        vars['SECRET_KEY_BASE'] = secret_key_base if rails?
+        vars['SECRET_KEY_BASE'] = secret_key_base if rails? || phoenix?
       end.merge(custom_env)
     end
 
@@ -98,12 +104,30 @@ class Chef::Recipe
       "/home/#{user_name}"
     end
 
+    def phoenix?
+      layout == 'phoenix'
+    end
+
     def postgresql?
       attributes["postgresql"]
     end
 
     def postgresql_db_name
       name && name.gsub(/[^\w]/, '_')
+    end
+
+    def postgresql_db_url
+      if postgresql_password
+        "postgres://#{user_name}:#{postgresql_password}@127.0.0.1/#{postgresql_db_name}"
+      else
+        "postgres:///#{postgresql_db_name}"
+      end
+    end
+
+    def postgresql_password
+      if elixir?
+        secret(:postgresql_password)
+      end
     end
 
     def procfile_path
@@ -120,6 +144,24 @@ class Chef::Recipe
       else
         {}
       end
+    end
+
+    def proxy?
+      phoenix?
+    end
+
+    def proxy_command
+      if phoenix?
+        "mix phoenix.server"
+      end
+    end
+
+    def proxy_name
+      name && "#{name.gsub(/[^\w]/, '_')}_upstream"
+    end
+
+    def proxy_port
+      4001 + user_index
     end
 
     def public_directory
@@ -186,9 +228,10 @@ class Chef::Recipe
         custom_dirs = custom_dirs.split(' ') if custom_dirs.is_a?(String)
 
         directories = %w{log pids system} + custom_dirs
-        directories << 'bundle' if rails? || middleman?
-        directories << 'node_modules' if node? || meteor?
         directories << 'bower_components' if bower?
+        directories << 'bundle' if rails? || middleman?
+        directories << 'deps' if phoenix?
+        directories << 'node_modules' if node? || meteor? || phoenix?
 
         directories
       end

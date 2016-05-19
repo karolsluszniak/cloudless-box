@@ -11,10 +11,12 @@ applications.select(&:repository?).each do |app|
       build_middleman_app(release_path) { app(app) } if app.middleman?
       build_meteor_app(release_path) { app(app) } if app.meteor?
       build_node_app(release_path) { app(app) } if app.node?
+      build_phoenix_app(release_path) { app(app) } if app.phoenix?
       build_rails_app(release_path) { app(app) } if app.rails?
     end
 
     before_restart do
+      release_phoenix_app(release_path) { app(app) } if app.phoenix?
       release_rails_app(release_path) { app(app) } if app.rails?
     end
 
@@ -28,6 +30,10 @@ applications.select(&:repository?).each do |app|
     create_dirs_before_symlink app.directories_created_for_release
     symlinks app.symlinks
     restart_command do
+      if app.proxy?
+        update_proxy { app(app) }
+      end
+
       file "#{app.release_working_directory(release_path)}/tmp/restart.txt" do
         action :touch
       end

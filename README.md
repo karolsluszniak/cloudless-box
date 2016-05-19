@@ -1,10 +1,10 @@
 # Cloudless Box
 
-**Cloudless Box** is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Node, Meteor or Middleman applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run CentOS Linux.
+**Cloudless Box** is an opinionated Chef cookbook that allows to run one or more Ruby on Rails, Phoenix, Node, Meteor or Middleman applications on single server with databases, backup and more. It's targeted at VPS and dedicated servers that run CentOS Linux.
 
 ##### Who is it for?
 
-1. Everyone who wants to have one or more Ruby on Rails, Node, Meteor, Middleman applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server or data failure.
+1. Everyone who wants to have one or more Ruby on Rails, Phoenix, Node, Meteor, Middleman applications or static websites on single, blazing fast and secure web server without spending a dozen days configuring it and committing suicide on server or data failure.
 2. Everyone who got used to easy deployments, such as those on Heroku, but wants it faster, cheaper and under control. With **Cloudless Box**, deploying new app is a matter of adding few lines to server's JSON config plus you get similar env variables like DATABASE_URL.
 3. Everyone who is tired of configuring and executing deployment for each app separately (ie. Capistrano) - **Cloudless Box** can handle all deployments at once. Of course you can still opt for custom deployment strategies by omitting single configuration line.
 4. Everyone who don't know their way around Chef - **Cloudless Box** comes with complete setup guide, possible to follow by people unfamiliar with server cookery. You are assumed to have basic *NIX terminal skills and a shiny new server with CentOS on it.
@@ -160,7 +160,7 @@ Attribute | Description
 ----------|------------
 `bower` | requests Bower support; if set, Bower will be available and `bower install --production` will be run on app's deployment
 `env` | object with custom enviroment variables; if set, variables will be added to Bash profile, `.env` and Passenger ([read more](#environment-variables))
-`layout` | specifies the application layout; can be one of `static`, `rails`, `node`, `meteor` or `middleman`; defaults to `static`
+`layout` | specifies the application layout; can be one of `static`, `rails`, `phoenix`, `node`, `meteor` or `middleman`; defaults to `static`
 `mongodb` | requests MongoDB database for the application; if set to `true`, MONGO_URL environment variable will become available
 `nginx` | object with custom Nginx options; if set, options will be added to application's Nginx site configuration
 `postgresql` | requests PostgreSQL database for the application; if set to `true`, DATABASE_URL environment variable will become available
@@ -218,6 +218,7 @@ Layout | Procedure
 `meteor` | call `meteor build`, apply Node layout
 `middleman` | call `middleman build`
 `node` | link `node_modules` shared directory, call `npm install`
+`phoenix` | call `mix deps.get`, `mix compile` and `brunch build`
 `rails` | call `bundle install`, call `rake assets:precompile`
 
 Here's what happens during the application release sub-procedure:

@@ -1,0 +1,20 @@
+[Unit]
+StopWhenUnneeded=true
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=<%= @app.user_name %>
+Group=<%= @app.group_name %>
+WorkingDirectory=<%= @app.app_root %>
+<% @app.env.each do |var, val| %>
+Environment=<%= var %>=<%= val %>
+<% end %>
+ExecStart=/bin/bash -lc '<%= @app.proxy_command %>'
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=control-group

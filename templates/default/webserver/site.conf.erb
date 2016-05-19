@@ -1,3 +1,9 @@
+<% if @app.proxy? %>
+upstream <%= @app.proxy_name %> {
+  server 127.0.0.1:<%= @app.proxy_port %>;
+}
+<% end %>
+
 server {
   listen 80;
   listen [::]:80;
@@ -22,6 +28,13 @@ server {
 <% @app.nginx_options.each do |option| %>
   <%= option %>;
 <% end %>
+
+<% end %>
+<% if @app.proxy? %>
+  location / {
+    proxy_redirect off;
+    proxy_pass http://<%= @app.proxy_name %>;
+  }
 
 <% end %>
   error_page 404 422 500 /x.html;

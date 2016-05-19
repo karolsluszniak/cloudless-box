@@ -26,6 +26,10 @@ describe 'webserver' do
     its(:stdout) { should match /Node app home page/ }
   end
 
+  describe command("curl -H 'Host: phoenix-app.#{host_inventory['hostname']}' localhost") do
+    its(:stdout) { should match /Welcome to Phoenix!/ }
+  end
+
   describe command("curl -H 'Host: rails-app.#{host_inventory['hostname']}' localhost") do
     its(:stdout) { should match /Rails app home page/ }
   end

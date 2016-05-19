@@ -14,6 +14,9 @@ suites:
       - 'recipe[cloudless-box::default]'
     attributes:
       cloudless-box:
+        gems:
+          sass: true
+
         applications:
           meteor-app:
             layout: meteor
@@ -36,6 +39,12 @@ suites:
             repository: https://github.com/karolsluszniak/cloudless-box.git
             env:
               sample_variable: '123'
+
+          phoenix-app:
+            layout: phoenix
+            postgresql: true
+            repository_path: test/apps/phoenix-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git
 
           rails-app:
             layout: rails
@@ -61,3 +70,15 @@ suites:
               about.html: true
               article_index.html: articles/index.html
               category_index.html: categories/index.html
+
+  - name: phoenix-only
+    run_list:
+      - 'recipe[cloudless-box::default]'
+    attributes:
+      cloudless-box:
+        applications:
+          phoenix-app:
+            layout: phoenix
+            postgresql: true
+            repository_path: test/apps/phoenix-app
+            repository: https://github.com/karolsluszniak/cloudless-box.git

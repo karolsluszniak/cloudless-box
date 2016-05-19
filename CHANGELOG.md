@@ -1,5 +1,13 @@
 ## Changelog
 
+### v2.1
+
+##### New features
+
+- added support for the `phoenix` application layout
+- added the `gems` global attribute support
+- added the `packages` global attribute support
+
 ### v2.0
 
 ##### New features

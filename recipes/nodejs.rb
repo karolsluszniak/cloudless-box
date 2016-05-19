@@ -1,7 +1,7 @@
 url = 'https://rpm.nodesource.com/setup'
 bin_dir = '/bin'
 
-bash 'install ffmpeg' do
+bash 'install nodejs' do
   code [
     "curl --silent --location #{url} | bash -",
     "yum install -y nodejs"
