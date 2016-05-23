@@ -218,13 +218,14 @@ Layout | Procedure
 `meteor` | call `meteor build`, apply Node layout
 `middleman` | call `middleman build`
 `node` | link `node_modules` shared directory, call `npm install`
-`phoenix` | call `mix deps.get`, `mix compile` and `brunch build`
+`phoenix` | call `mix deps.get`, `mix compile`, `brunch build` and `mix phoenix.digest`
 `rails` | call `bundle install`, call `rake assets:precompile`
 
 Here's what happens during the application release sub-procedure:
 
 Layout | Procedure
 -------|----------
+`phoenix` | call `mix ecto.migrate`
 `rails` | remove `database.yml`, call `rake db:migrate`
 
 ### Private repositories

@@ -1,4 +1,4 @@
-url = 'https://rpm.nodesource.com/setup'
+url = 'https://rpm.nodesource.com/setup_4.x'
 bin_dir = '/bin'
 
 bash 'install nodejs' do

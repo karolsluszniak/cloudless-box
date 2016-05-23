@@ -1,5 +1,11 @@
 ## Changelog
 
+### v2.1.1
+
+##### Improvements
+
+- nodejs is now installed from 4.x LTS repo
+
 ### v2.1
 
 ##### New features
