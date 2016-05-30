@@ -1,5 +1,11 @@
 ## Changelog
 
+### v2.1.2
+
+##### Bug fixes
+
+- fixed nginx configuration for proxying websockets (`phoenix` layout)
+
 ### v2.1.1
 
 ##### Improvements
