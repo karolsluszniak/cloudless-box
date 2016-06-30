@@ -158,9 +158,11 @@ You should list your applications in the `node["cloudless-box"]["applications"]`
 
 Attribute | Description
 ----------|------------
+`asset_cmd` | specifies custom asset precompilation command or disables default one with `false`
 `bower` | requests Bower support; if set, Bower will be available and `bower install --production` will be run on app's deployment
 `env` | object with custom enviroment variables; if set, variables will be added to Bash profile, `.env` and Passenger ([read more](#environment-variables))
 `layout` | specifies the application layout; can be one of `static`, `rails`, `phoenix`, `node`, `meteor` or `middleman`; defaults to `static`
+`migration_cmd` | specifies custom database migration command or disables default one with `false`
 `mongodb` | requests MongoDB database for the application; if set to `true`, MONGO_URL environment variable will become available
 `nginx` | object with custom Nginx options; if set, options will be added to application's Nginx site configuration
 `postgresql` | requests PostgreSQL database for the application; if set to `true`, DATABASE_URL environment variable will become available

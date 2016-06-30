@@ -1,5 +1,12 @@
 ## Changelog
 
+### v2.1.3
+
+##### New features
+
+- added the `asset_cmd` per-app attribute support
+- added the `migration_cmd` per-app attribute support
+
 ### v2.1.2
 
 ##### Bug fixes

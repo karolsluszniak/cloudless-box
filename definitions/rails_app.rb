@@ -10,12 +10,14 @@ define :build_rails_app, app: nil, path: nil do
     environment app.env
   end
 
-  rbenv_execute "bundle exec rake assets:precompile" do
-    ruby_version app.ruby
-    user app.user_name
-    group app.group_name
-    cwd release_path
-    environment app.env
+  if app.asset_cmd
+    rbenv_execute app.asset_cmd do
+      ruby_version app.ruby
+      user app.user_name
+      group app.group_name
+      cwd release_path
+      environment app.env
+    end
   end
 end
 
@@ -27,11 +29,13 @@ define :release_rails_app, app: nil, path: nil do
     action :delete
   end
 
-  rbenv_execute "bundle exec rake db:migrate" do
-    ruby_version app.ruby
-    user app.user_name
-    group app.group_name
-    cwd release_path
-    environment app.env
+  if app.migration_cmd
+    rbenv_execute app.migration_cmd do
+      ruby_version app.ruby
+      user app.user_name
+      group app.group_name
+      cwd release_path
+      environment app.env
+    end
   end
 end

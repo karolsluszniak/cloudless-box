@@ -14,6 +14,18 @@ class Chef::Recipe
       path_join(path, 'current', repository_path)
     end
 
+    def asset_cmd
+      if attributes['asset_cmd'] == false
+        nil
+      elsif attributes['asset_cmd'].is_a?(String)
+        attributes['asset_cmd']
+      elsif rails?
+        'bundle exec rake assets:precompile'
+      elsif phoenix?
+        'node_modules/brunch/bin/brunch build --production'
+      end
+    end
+
     def bower?
       attributes["bower"]
     end
@@ -68,6 +80,18 @@ class Chef::Recipe
 
     def middleman?
       layout == 'middleman'
+    end
+
+    def migration_cmd
+      if attributes['migration_cmd'] == false
+        nil
+      elsif attributes['migration_cmd'].is_a?(String)
+        attributes['migration_cmd']
+      elsif rails?
+        'bundle exec rake db:migrate'
+      elsif phoenix?
+        'mix ecto.migrate'
+      end
     end
 
     def mongodb?

@@ -15,9 +15,9 @@ define :build_phoenix_app, app: nil, path: nil do
     "mix deps.get --only prod",
     "mix compile",
     "npm install --production",
-    "node_modules/brunch/bin/brunch build --production",
+    app.asset_cmd,
     "mix phoenix.digest"
-  ].each do |command|
+  ].compact.each do |command|
     execute command do
       user app.user_name
       group app.group_name
@@ -31,10 +31,12 @@ define :release_phoenix_app, app: nil, path: nil do
   app = params[:app]
   release_path = app.release_working_directory(params[:path] || params[:name])
 
-  execute "mix ecto.migrate" do
-    user app.user_name
-    group app.group_name
-    cwd release_path
-    environment app.env
+  if app.migration_cmd
+    execute app.migration_cmd do
+      user app.user_name
+      group app.group_name
+      cwd release_path
+      environment app.env
+    end
   end
 end
