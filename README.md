@@ -176,7 +176,7 @@ Attribute | Description
 `shared_dirs` | array of additional shared directories for on-deployment creation and symlinking; defaults to `log pids system` (plus per-layout additions)
 `sticky_sessions` | enables sticky sessions Passenger setting; by default, it's enabled only for `meteor` layout; this comes useful when using WebSockets in an app
 `symlinks` | object with custom symlinks for on-deployment linking; defaults to `.env`; allows to change or remove the defaults (with `false`)
-`url` | sets custom domain for the application; if unset, app will be available at `<app-name>.domain.com` subdomain
+`url` | string or array that sets custom domain(s) for the application; if unset, app will be available at `<app-name>.domain.com` subdomain
 `workers` | allows to add and control per-app workers; if unset, one worker process per line in app's Procfile will be configured
 
 All attributes are optional and have sensible defaults. If none will be set, you'll end up with a system account for static, undeployed website without any database or addon on your server.

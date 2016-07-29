@@ -18,7 +18,11 @@ describe 'webserver' do
     its(:stdout) { should match /MeteorApp/ }
   end
 
-  describe command("curl -H 'Host: custom-middleman-app-domain.com' localhost") do
+  describe command("curl -H 'Host: custom-middleman-app-domain-1.com' localhost") do
+    its(:stdout) { should match /Middleman app home page/ }
+  end
+
+  describe command("curl -H 'Host: custom-middleman-app-domain-2.com' localhost") do
     its(:stdout) { should match /Middleman app home page/ }
   end
 

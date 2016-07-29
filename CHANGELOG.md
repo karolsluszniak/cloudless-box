@@ -1,5 +1,11 @@
 ## Changelog
 
+### v2.1.4
+
+##### Improvements
+
+- the `url` attribute can now be an array
+
 ### v2.1.3
 
 ##### New features

@@ -30,7 +30,9 @@ suites:
             ruby: 2.2.2
             repository_path: test/apps/middleman-app
             repository: https://github.com/karolsluszniak/cloudless-box.git
-            url: custom-middleman-app-domain.com
+            url:
+              - custom-middleman-app-domain-1.com
+              - custom-middleman-app-domain-2.com
 
           node-app:
             layout: node

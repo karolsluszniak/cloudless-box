@@ -294,22 +294,26 @@ class Chef::Recipe
       name
     end
 
-    def url
-      if attributes['url'] && attributes['url'].end_with?('.')
-        "#{attributes["url"]}#{node['fqdn']}"
+    def urls
+      if attributes['url'].is_a?(Array)
+        attributes['url'].map do |each_url|
+          each_url.end_with?('.') ? "#{each_url}#{node['fqdn']}" : each_url
+        end
+      elsif attributes['url'] && attributes['url'].end_with?('.')
+        ["#{attributes["url"]}#{node['fqdn']}"]
       elsif attributes['url']
-        attributes["url"]
+        [attributes["url"]]
       else
-        "#{name}.#{node['fqdn']}"
+        ["#{name}.#{node['fqdn']}"]
       end
+    end
+
+    def url
+      urls.first
     end
 
     def url_with_protocol
       "http://#{url}"
-    end
-
-    def url?
-      url.is_a?(String)
     end
 
     def user_name

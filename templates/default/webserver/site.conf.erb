@@ -13,7 +13,7 @@ server {
   listen 80;
   listen [::]:80;
 
-  server_name <%= @app.url %>;
+  server_name <%= @app.urls.join(' ') %>;
   root <%= @app.nginx_root %>;
 
 <% if @app.passenger? %>
