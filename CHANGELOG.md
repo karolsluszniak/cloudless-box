@@ -1,5 +1,11 @@
 ## Changelog
 
+### v2.1.5
+
+##### Improvements
+
+- apps without FQDN in `url` attribute will now work on any hostname
+
 ### v2.1.4
 
 ##### Improvements

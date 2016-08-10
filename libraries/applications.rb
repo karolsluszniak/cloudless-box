@@ -300,11 +300,11 @@ class Chef::Recipe
           each_url.end_with?('.') ? "#{each_url}#{node['fqdn']}" : each_url
         end
       elsif attributes['url'] && attributes['url'].end_with?('.')
-        ["#{attributes["url"]}#{node['fqdn']}"]
+        ["#{attributes["url"]}#{node['fqdn']}", "#{attributes["url"]}*"]
       elsif attributes['url']
         [attributes["url"]]
       else
-        ["#{name}.#{node['fqdn']}"]
+        ["#{name}.#{node['fqdn']}", "#{name}.*"]
       end
     end
 
