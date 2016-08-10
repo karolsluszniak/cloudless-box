@@ -101,7 +101,7 @@ Hit `Ctrl+O` and `Ctrl+X`. Finish by restarting SSH:
 
 Cookbook is configured via attributes, usually set as JSON in server's environment attributes on the Chef Manage page. They may also be set as role default/override attributes or in any other fashion available in Chef.
 
-After changing attributes, re-run `chef-client` on your server in order to apply new ones.
+After changing attributes, re-run `chef-client` on your server in order to apply new ones. If per-app attributes won't have effect after running `chef-client`, you may have to [create empty commit in order to force re-deployment](#tip-re-scale-without-procfile-change).
 
 ### Example
 
@@ -145,7 +145,10 @@ A complete JSON configuration may look like this:
       "access_key_id": "(...)",
       "secret_access_key": "(...)"
     },
-    "secret": "my-server-secret"
+    "secret": "my-server-secret",
+    "gems": {
+      "sass": true
+    }
   }
 }
 ```
@@ -183,7 +186,7 @@ All attributes are optional and have sensible defaults. If none will be set, you
 
 Packages like PostgreSQL, MongoDB, Redis, Ruby version manager, Meteor or Bower will not be installed on your system until any of your apps requests them. This will keep your system as lightweight as possible.
 
-Removing applications from the `node["cloudless-box"]["applications"]` list will not remove them from your server. You'll have to do that manually by removing the `deploy-<app-name>` account along with all its files as well as Nginx site configuration.
+Removing applications from the `node["cloudless-box"]["applications"]` list will not remove them from your server. You'll have to do that manually by removing the `deploy-<app-name>` account along with all its files as well as Nginx site configuration and worker services.
 
 ### Global settings
 
@@ -193,6 +196,7 @@ Attribute | Description
 ----------|------------
 `backup`  | object with `bucket`, `access_key_id` and `secret_access_key` keys that enables daily PostgreSQL and MongoDB database backup
 `secret`  | sets additional secret component for generating various secret hashes across the server in order to improve overall security
+`gems`    | object with list of optional, global gems needed on the server (the value is ignored for now)
 
 ## Usage
 
